@@ -1,24 +1,55 @@
-import React from 'react'
-export default function Sidebar({route,setRoute,setTheme}){
+import React from "react";
+import { motion } from "framer-motion";
+
+export default function Sidebar({ route, setRoute, setTheme }) {
+  const navItems = [
+    { name: "Home", route: "home" },
+    { name: "Theory", route: "theory" },
+    { name: "Story Mode", route: "story" },
+    { name: "Algorithm", route: "algorithm" },
+    { name: "Visualization", route: "viz" },
+    { name: "Quiz", route: "quiz" },
+  ];
+
   return (
-    <aside className="sidebar">
+    <motion.aside
+      className="sidebar"
+      initial={{ x: -300 }}
+      animate={{ x: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="brand">Binary Trees — DSA Visualizer</div>
       <nav>
-        <div className={`nav-button ${route==='home'?'active':''}`} onClick={()=>setRoute('home')}>Home</div>
-        <div className={`nav-button ${route==='theory'?'active':''}`} onClick={()=>setRoute('theory')}>Theory</div>
-        <div className={`nav-button ${route==='story'?'active':''}`} onClick={()=>setRoute('story')}>Story Mode</div>
-        <div className={`nav-button ${route==='algorithm'?'active':''}`} onClick={()=>setRoute('algorithm')}>Algorithm</div>
-        <div className={`nav-button ${route==='viz'?'active':''}`} onClick={()=>setRoute('viz')}>Visualization</div>
-        <div className={`nav-button ${route==='quiz'?'active':''}`} onClick={()=>setRoute('quiz')}>Quiz</div>
+        {navItems.map((item, index) => (
+          <motion.div
+            key={item.route}
+            className={`nav-button ${route === item.route ? "active" : ""}`}
+            onClick={() => setRoute(item.route)}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 * index, duration: 0.3 }}
+          >
+            {item.name}
+          </motion.div>
+        ))}
       </nav>
-      <div className="card" style={{marginTop:18}}>
+      <motion.div
+        className="card"
+        style={{ marginTop: 18 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, duration: 0.3 }}
+      >
         <div className="small">Theme</div>
-        <select className="select" onChange={(e)=>setTheme(e.target.value)}>
+        <select className="select" onChange={(e) => setTheme(e.target.value)}>
           <option value="tech-forest">Tech Forest</option>
           <option value="oceanic">Oceanic</option>
         </select>
+      </motion.div>
+      <div className="footer">
+        Made for DSA learning • Use dev server:{" "}
+        <span className="small">npm run dev</span>
       </div>
-      <div className="footer">Made for DSA learning • Use dev server: <span className="small">npm run dev</span></div>
-    </aside>
-  )
+    </motion.aside>
+  );
 }
