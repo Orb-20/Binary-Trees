@@ -11,7 +11,6 @@ import { motion } from "framer-motion";
 export default function App() {
   const [route, setRoute] = useState("home");
   const [treeType, setTreeType] = useState("BST");
-  const [theme, setTheme] = useState("tech-forest"); // placeholder for theme selection
 
   const componentMap = {
     home: <Home setTreeType={setTreeType} setRoute={setRoute} />,
@@ -23,8 +22,8 @@ export default function App() {
   };
 
   return (
-    <div className={`app ${theme}`}>
-      <Sidebar route={route} setRoute={setRoute} setTheme={setTheme} />
+    <div className="app">
+      <Sidebar route={route} setRoute={setRoute} />
       <main className="main">
         <motion.div
           key={route}

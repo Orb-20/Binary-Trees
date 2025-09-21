@@ -2,16 +2,23 @@ import React from "react";
 import { motion } from "framer-motion";
 import ParticleTree3D from "../components/ParticleTree3D";
 
-// A new component for the stylish theory nodes
-const TheoryNode = ({ title, children, delay }) => (
-  <motion.div
-    className="theory-node"
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6, delay: delay }}
-  >
+// A reusable component for the stylish theory nodes
+const TheoryNode = ({ title, children }) => (
+  <div className="theory-node">
     <div className="theory-node-title">{title}</div>
     <div className="theory-node-content">{children}</div>
+  </div>
+);
+
+// A wrapper to handle animation and connecting lines for each node
+const AnimatedNodeWrapper = ({ children, delay }) => (
+  <motion.div
+    className="tree-node-wrapper"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay }}
+  >
+    {children}
   </motion.div>
 );
 
@@ -35,19 +42,43 @@ export default function Home({ setTreeType, setRoute }) {
         TREES
       </motion.h1>
 
-      {/* 2. Redesigned Theory Section with Node Structure */}
-      <div className="home-theory-section">
-        <TheoryNode title="Definition" delay={0.2}>
-          A tree is a non-linear data structure that represents hierarchical relationships. It consists of nodes connected by edges, forming a parent-child structure.
-        </TheoryNode>
-        <TheoryNode title="Core Concepts" delay={0.4}>
-          The <b>Root</b> is the topmost node. A <b>Leaf</b> is a node with no children. An <b>Edge</b> is the link between a parent and a child.
-        </TheoryNode>
-        <TheoryNode title="Why Use Trees?" delay={0.6}>
-          They provide efficient searching, insertion, and deletion. For balanced trees like AVL or Red-Black, these operations average O(log n) time.
-        </TheoryNode>
-      </div>
+      {/* 2. Redesigned Hierarchical Tree Info Section */}
+      <div className="tree-info-container">
+        <AnimatedNodeWrapper delay={0.2}>
+          <TheoryNode title="What is a Tree?">
+            A non-linear data structure representing hierarchical data. It consists of a root node, and connected child nodes.
+          </TheoryNode>
+          
+          {/* Children of the root node */}
+          <div className="tree-children">
+            <AnimatedNodeWrapper delay={0.4}>
+              <TheoryNode title="Core Concepts">
+                The <b>Root</b> is the topmost node. A <b>Leaf</b> is a node with no children. An <b>Edge</b> is the link between a parent and a child.
+              </TheoryNode>
+            </AnimatedNodeWrapper>
 
+            <AnimatedNodeWrapper delay={0.6}>
+              <TheoryNode title="Why Use Trees?">
+                They provide efficient searching, insertion, and deletion. For balanced trees, these operations average O(log n) time.
+              </TheoryNode>
+              
+              {/* Grandchildren nodes */}
+              <div className="tree-children">
+                <AnimatedNodeWrapper delay={0.8}>
+                  <TheoryNode title="Real-World Examples">
+                    File systems, organization charts, the HTML DOM, and routing algorithms in computer networks.
+                  </TheoryNode>
+                </AnimatedNodeWrapper>
+                <AnimatedNodeWrapper delay={1.0}>
+                  <TheoryNode title="Common Types">
+                    Includes Binary Search Trees (BST), AVL Trees, Heaps, and Tries, each optimized for different tasks.
+                  </TheoryNode>
+                </AnimatedNodeWrapper>
+              </div>
+            </AnimatedNodeWrapper>
+          </div>
+        </AnimatedNodeWrapper>
+      </div>
 
       {/* 3. Main content area (Animation + Options) */}
       <div className="home-main-content">
@@ -56,7 +87,7 @@ export default function Home({ setTreeType, setRoute }) {
           className="animation-container"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
         >
           <ParticleTree3D />
         </motion.div>
@@ -67,7 +98,7 @@ export default function Home({ setTreeType, setRoute }) {
           initial="hidden"
           animate="visible"
           variants={{
-            visible: { transition: { staggerChildren: 0.15, delayChildren: 1.0 } },
+            visible: { transition: { staggerChildren: 0.15, delayChildren: 1.4 } },
           }}
         >
           {options.map((opt) => (
@@ -82,12 +113,8 @@ export default function Home({ setTreeType, setRoute }) {
                 hidden: { x: 50, opacity: 0 },
                 visible: { x: 0, opacity: 1 },
               }}
-              whileHover={{
-                x: -10,
-                backgroundColor: "rgba(0, 212, 255, 0.1)",
-                borderColor: "rgb(0, 212, 255)",
-                transition: { duration: 0.2 },
-              }}
+              whileHover={{ scale: 1.05, x: 5 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
               {opt.name}
             </motion.div>

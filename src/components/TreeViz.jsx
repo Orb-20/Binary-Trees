@@ -28,7 +28,7 @@ export default function TreeViz(){
       .enter().append('path')
       .attr('class','link')
       .attr('d', d3.linkVertical().x(d=>d.x).y(d=>d.y))
-      .attr('stroke','rgba(0,212,255,0.6)')
+      .attr('stroke','#C6A15B') // Antique Gold
       .attr('fill','none')
       .attr('stroke-width',2)
       .attr('opacity',0)
@@ -37,8 +37,10 @@ export default function TreeViz(){
     const node = g.selectAll('.node').data(root.descendants()).enter().append('g')
       .attr('transform', d=>`translate(${d.x},${d.y})`)
     node.append('circle').attr('r',0)
-      .transition().delay((d,i)=>i*120).duration(400).attr('r',14).attr('fill','rgba(0,212,255,0.12)').attr('stroke','rgba(0,212,255,0.9)')
-    node.append('text').text(d=>d.data.name).attr('y',5).attr('text-anchor','middle').attr('fill','#e6f7ff').attr('font-size',12)
+      .transition().delay((d,i)=>i*120).duration(400).attr('r',14)
+      .attr('fill','rgba(15, 166, 131, 0.1)') // Jade Transparent
+      .attr('stroke','#0FA683') // Jade
+    node.append('text').text(d=>d.data.name).attr('y',5).attr('text-anchor','middle').attr('fill','#0B0F13').attr('font-size',12) // Rich Charcoal
   },[])
   return (
     <div>
