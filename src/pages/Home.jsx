@@ -6,9 +6,8 @@ export default function Home({ setTreeType, setRoute }) {
   const options = [
     { name: "Binary Tree", type: "BT", route: "theory" },
     { name: "Binary Search Tree", type: "BST", route: "theory" },
-    { name: "Heap", type: "HEAP", route: "theory" }, // Assuming you'll add content for HEAP
-    { name: "Tries", type: "TRIES", route: "theory" }, // Assuming you'll add content for TRIES
-    { name: "Interactive Visualizer", type: null, route: "viz" },
+    { name: "Heap", type: "HEAP", route: "theory" },
+    { name: "Tries", type: "TRIES", route: "theory" },
   ];
 
   return (
@@ -25,15 +24,17 @@ export default function Home({ setTreeType, setRoute }) {
 
       {/* 2. Main content area (Animation + Options) */}
       <div className="home-main-content">
-        {/* Left Side: Animation */}
-        <motion.div
-          className="animation-container"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <ParticleTree3D particleCount={1200} />
-        </motion.div>
+        {/* Wrapper for vertical alignment and height control */}
+        <div className="animation-wrapper">
+          <motion.div
+            className="animation-container"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <ParticleTree3D />
+          </motion.div>
+        </div>
 
         {/* Right Side: Tree Options */}
         <motion.div
