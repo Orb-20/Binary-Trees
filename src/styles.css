@@ -101,9 +101,6 @@ body {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   border: 1px solid transparent;
-  position: relative; /* For the animated border */
-  overflow: hidden; /* Crucial for the animated border */
-  z-index: 0;
 }
 
 .nav-button:hover {
@@ -111,43 +108,17 @@ body {
   color: #fff;
 }
 
-/* --- Liquid Glass Effect for Active Nav Button --- */
-@keyframes liquidBorder {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
+/* --- New "Bubble" Effect for Active Nav Button --- */
 .nav-button.active {
-  background: rgba(15, 166, 131, 0.3); /* Base semi-transparent jade */
-  backdrop-filter: blur(18px); /* Increased blur */
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.25); /* Slightly stronger border */
+  background: radial-gradient(circle at 50% 0%, hsl(160, 70%, 60%), var(--primary) 80%);
   color: #fff;
   font-weight: 600;
-  box-shadow: inset 0 0 10px rgba(255,255,255,0.1), 0 4px 15px rgba(0,0,0,0.2); /* Inner & outer shadow */
-  
-  /* Animated border effect (liquid illusion) */
-  &::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-      60deg,
-      rgba(255, 255, 255, 0.2) 0%,
-      rgba(255, 255, 255, 0.05) 33%,
-      rgba(255, 255, 255, 0.05) 66%,
-      rgba(255, 255, 255, 0.2) 100%
-    );
-    background-size: 200% 200%;
-    animation: liquidBorder 8s ease infinite;
-    z-index: -1;
-    border-radius: inherit;
-    filter: blur(8px); /* Blur the moving gradient to make it liquid-like */
-  }
+  border-radius: 30px; /* Pill shape */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.25), /* Inner top highlight */
+    0 5px 15px rgba(0,0,0,0.3); /* Softer drop shadow */
+  transform: scale(1.02); /* Slight pop */
 }
 
 /* --- 2. New Glassmorphism Card Style --- */
