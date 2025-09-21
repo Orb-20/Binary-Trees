@@ -333,7 +333,9 @@ body {
   padding: 12px;
 }
 
-.code-block {
+/* FIX: Targeted <pre> tag and added display:block for stability */
+pre.code-block {
+  display: block;
   background: var(--color-rich-charcoal);
   color: var(--color-ivory);
   padding: 20px;
@@ -342,7 +344,10 @@ body {
   font-size: 14px;
   line-height: 1.7;
   white-space: pre-wrap;
+  word-wrap: break-word;
   box-shadow: var(--shadow-lg);
+  margin-top: 10px; /* Added for spacing */
+  margin-bottom: 0;
 }
 
 .code-block .keyword {
@@ -350,4 +355,132 @@ body {
 }
 .code-block .value {
   color: var(--color-antique-gold);
+}
+
+/* --- ADDED FOR ENHANCED SYNTAX HIGHLIGHTING --- */
+.code-block .comment {
+  color: var(--color-graphite);
+  font-style: italic;
+}
+.code-block .punctuation {
+  color: var(--color-warm-taupe);
+}
+.code-block .operator {
+  color: var(--color-soft-cyan);
+}
+.code-block .builtin {
+  color: var(--color-royal-plum);
+}
+.code-block .control {
+  color: var(--color-burnt-copper);
+}
+.code-block .function-name {
+  color: var(--color-jade);
+}
+
+/* --- ADD AT THE END OF styles.css --- */
+
+.controls-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  padding: 16px 24px;
+}
+
+.tree-input {
+  flex-grow: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--color-warm-taupe);
+  border-radius: var(--radius-md);
+  background: var(--color-ivory);
+  font-size: 1rem;
+  color: var(--text);
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.tree-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15, 166, 131, 0.2);
+}
+
+.btn-tree-op {
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: #fff;
+}
+
+.btn-tree-op.insert {
+  background-color: var(--primary);
+  box-shadow: 0 4px 15px rgba(15, 166, 131, 0.3);
+}
+
+.btn-tree-op.insert:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 166, 131, 0.4);
+}
+
+.btn-tree-op.delete {
+  background-color: var(--color-burnt-copper);
+  box-shadow: 0 4px 15px rgba(182, 90, 53, 0.3);
+}
+
+.btn-tree-op.delete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(182, 90, 53, 0.4);
+}
+
+.analysis-result {
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-deep-forest);
+  padding: 16px 24px;
+  font-size: 1.1rem;
+  background: linear-gradient(90deg, rgba(248, 247, 245, 0.2), rgba(217, 207, 196, 0.2));
+}
+
+/* --- ADD AT THE END OF styles.css --- */
+
+.tree-select {
+  padding: 12px 16px;
+  border: 1px solid var(--color-warm-taupe);
+  border-radius: var(--radius-md);
+  background-color: var(--color-ivory);
+  font-size: 1rem;
+  color: var(--text);
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.tree-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15, 166, 131, 0.2);
+}
+
+.radio-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.info-message {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  color: var(--muted);
 }
