@@ -71,16 +71,19 @@ body {
   display: flex;
   height: 100vh;
   background: transparent;
+  position: relative; /* Needed for LightRays background */
 }
 
 .sidebar {
   width: 260px;
   padding: 24px;
-  background: var(--color-deep-forest);
+  background: rgba(3, 47, 47, 0.9); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(10px);
   color: var(--color-ivory);
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  border-right: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .brand {
@@ -140,6 +143,7 @@ body {
   height: 100%;
   padding: 0 24px;
   justify-content: flex-start;
+  position: relative; /* This is required for the LightRays component */
 }
 
 /* --- 3. New Gradient Title & Glowing Underline --- */

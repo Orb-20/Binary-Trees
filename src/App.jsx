@@ -7,6 +7,7 @@ import StoryMode from "./pages/StoryMode";
 import Quiz from "./pages/Quiz";
 import TreeViz from "./components/TreeViz";
 import { motion } from "framer-motion";
+import LightRays from "./components/LightRays";
 
 export default function App() {
   const [route, setRoute] = useState("home");
@@ -23,6 +24,17 @@ export default function App() {
 
   return (
     <div className="app">
+      <LightRays
+        raysOrigin="top-center"
+        raysColor="#ffffff"
+        raysSpeed={0.4}
+        lightSpread={0.5}
+        rayLength={1.8}
+        followMouse={true}
+        mouseInfluence={0.08}
+        noiseAmount={0.03}
+        distortion={0.02}
+      />
       <Sidebar route={route} setRoute={setRoute} />
       <main className="main">
         <motion.div
