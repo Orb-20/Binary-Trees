@@ -2,14 +2,19 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const THEORIES = {
-  BT: `Binary Tree (BT)\nA Binary Tree is a fundamental tree data structure where each node has at most two children, referred to as the left child and the right child. It's a hierarchical structure used to store data in an organized way.
-  \nProperties:
-  - Root: The topmost node in the tree.
+  BT: `What is a Tree?\nA Tree is a fundamental non-linear data structure that represents hierarchical data. It consists of a collection of nodes connected by edges, with one node designated as the Root.
+  \nKey Concepts:
+  - Root: The topmost node in the tree, from which all other nodes descend.
   - Parent: A node that has child nodes.
   - Child: A node that has a parent node.
   - Leaf: A node with no children.
-  - Height: The length of the longest path from the root to a leaf.
-  - Depth: The length of the path from the root to a specific node.`,
+  - Edge: The link or connection between a parent and a child node.
+  \nCommon Types of Trees:
+  - Binary Tree (BT): A tree where each node has at most two children.
+  - Binary Search Tree (BST): A sorted binary tree where the left child is less than the parent and the right child is greater.
+  - AVL & Red-Black Trees: Self-balancing BSTs that guarantee efficient operations.
+  - Heaps: Specialized trees used for priority queues, with either the max or min element at the root.
+  - Tries: Trees used for efficiently storing and retrieving strings.`,
   BST: `Binary Search Tree (BST)\nA BST is a special type of binary tree where the data is organized in a sorted manner. For any given node:
   - All values in the left subtree are less than the node's value.
   - All values in the right subtree are greater than the node's value.
@@ -40,9 +45,11 @@ const THEORIES = {
 
 export default function Theory({ treeType }) {
   const text = THEORIES[treeType] || THEORIES["BT"];
+  const title = treeType === 'BT' ? 'Introduction to Trees' : `Theory — ${treeType}`;
+
   return (
     <div>
-      <h2 className="h1">Theory — {treeType}</h2>
+      <h2 className="h1">{title}</h2>
       <motion.div
         className="card"
         initial={{ opacity: 0, y: 20 }}

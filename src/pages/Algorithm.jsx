@@ -118,9 +118,11 @@ const RBBalancingCode = () => (
 );
 
 export default function Algorithm({treeType}){
+  const title = treeType === 'BT' ? 'Common Tree Algorithms' : `Algorithms — ${treeType}`;
+
   return (
     <div>
-      <h2 className="h1">Algorithms — {treeType}</h2>
+      <h2 className="h1">{title}</h2>
       <div className="card">
         <h3 className="small">Insertion (BST)</h3>
         <InsertionCode />
@@ -129,16 +131,29 @@ export default function Algorithm({treeType}){
         <h3 className="small">Search (BST)</h3>
         <SearchCode />
       </div>
-      <div className="card">
-        <h3 className="small">Notes on Self-Balancing Trees</h3>
-        <p className="info">For AVL and Red-Black trees, the standard BST insertion is followed by additional steps to maintain the tree's balance.</p>
-        <h4 className="small" style={{marginTop: '20px'}}>AVL Tree Balancing</h4>
-        <p className='info'>After a standard BST insert, we traverse up from the new leaf node to the root. For each node on this path, we update its height and check its balance factor. If a node becomes unbalanced, we perform the appropriate rotation(s) to restore the AVL property.</p>
-        <AVLBalancingCode />
-        <h4 className="small" style={{marginTop: '20px'}}>Red-Black Tree Balancing</h4>
-        <p className='info'>After a standard BST insert, the new node is colored red. This may violate some Red-Black properties (e.g., two adjacent red nodes). We then run a `fixViolation` function that uses a series of recolorings and rotations to restore the properties.</p>
-        <RBBalancingCode />
-      </div>
+
+      {(treeType === 'AVL' || treeType === 'RB') && (
+        <div className="card">
+          <h3 className="small">Notes on Self-Balancing Trees</h3>
+          <p className="info">For AVL and Red-Black trees, the standard BST insertion is followed by additional steps to maintain the tree's balance.</p>
+          
+          {treeType === 'AVL' && (
+            <>
+              <h4 className="small" style={{marginTop: '20px'}}>AVL Tree Balancing</h4>
+              <p className='info'>After a standard BST insert, we traverse up from the new leaf node to the root. For each node on this path, we update its height and check its balance factor. If a node becomes unbalanced, we perform the appropriate rotation(s) to restore the AVL property.</p>
+              <AVLBalancingCode />
+            </>
+          )}
+
+          {treeType === 'RB' && (
+            <>
+              <h4 className="small" style={{marginTop: '20px'}}>Red-Black Tree Balancing</h4>
+              <p className='info'>After a standard BST insert, the new node is colored red. This may violate some Red-Black properties (e.g., two adjacent red nodes). We then run a `fixViolation` function that uses a series of recolorings and rotations to restore the properties.</p>
+              <RBBalancingCode />
+            </>
+          )}
+        </div>
+      )}
     </div>
   )
 }

@@ -11,7 +11,7 @@ import LightRays from "./components/LightRays";
 
 export default function App() {
   const [route, setRoute] = useState("home");
-  const [treeType, setTreeType] = useState("BST");
+  const [treeType, setTreeType] = useState("BT"); // Changed from "BST" to "BT"
 
   const componentMap = {
     home: <Home setTreeType={setTreeType} setRoute={setRoute} />,

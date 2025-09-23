@@ -143,7 +143,7 @@ body {
   height: 100%;
   padding: 0 24px;
   justify-content: flex-start;
-  position: relative; /* This is required for the LightRays component */
+  position: relative; 
 }
 
 /* --- 3. New Gradient Title & Glowing Underline --- */
@@ -337,7 +337,6 @@ body {
   padding: 12px;
 }
 
-/* FIX: Targeted <pre> tag and added display:block for stability */
 pre.code-block {
   display: block;
   background: var(--color-rich-charcoal);
@@ -350,7 +349,7 @@ pre.code-block {
   white-space: pre-wrap;
   word-wrap: break-word;
   box-shadow: var(--shadow-lg);
-  margin-top: 10px; /* Added for spacing */
+  margin-top: 10px; 
   margin-bottom: 0;
 }
 
@@ -361,7 +360,6 @@ pre.code-block {
   color: var(--color-antique-gold);
 }
 
-/* --- ADDED FOR ENHANCED SYNTAX HIGHLIGHTING --- */
 .code-block .comment {
   color: var(--color-graphite);
   font-style: italic;
@@ -382,13 +380,11 @@ pre.code-block {
   color: var(--color-jade);
 }
 
-/* --- ADD AT THE END OF styles.css --- */
-
 .controls-container {
   display: flex;
   gap: 16px;
   align-items: center;
-  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  flex-wrap: wrap; 
   padding: 16px 24px;
 }
 
@@ -449,8 +445,6 @@ pre.code-block {
   background: linear-gradient(90deg, rgba(248, 247, 245, 0.2), rgba(217, 207, 196, 0.2));
 }
 
-/* --- ADD AT THE END OF styles.css --- */
-
 .tree-select {
   padding: 12px 16px;
   border: 1px solid var(--color-warm-taupe);
@@ -487,4 +481,34 @@ pre.code-block {
   text-align: center;
   font-style: italic;
   color: var(--muted);
+}
+
+/* New styles for Story Mode */
+.story-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  align-items: center;
+  gap: 32px;
+}
+
+.story-text {
+  flex: 1.5;
+  min-width: 300px; /* Ensure text has enough space */
+}
+
+.story-visual {
+  flex: 1;
+  min-width: 250px; /* Ensure visual has enough space */
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.loading-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+  color: var(--muted);
+  font-style: italic;
 }
