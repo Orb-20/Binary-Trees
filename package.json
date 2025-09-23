@@ -18,7 +18,8 @@
     "@react-three/postprocessing": "^2.16.2",
     "three": "^0.164.1",
     "ogl": "^1.0.0",
-    "lottie-react": "^2.4.0"
+    "lottie-react": "^2.4.0",
+    "lottie-web": "^5.12.2"
   },
   "devDependencies": {
     "vite": "^5.0.0",

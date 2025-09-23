@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Home from "./pages/Home";
@@ -11,7 +12,7 @@ import LightRays from "./components/LightRays";
 
 export default function App() {
   const [route, setRoute] = useState("home");
-  const [treeType, setTreeType] = useState("BT"); // Changed from "BST" to "BT"
+  const [treeType, setTreeType] = useState("GENERAL"); // Changed to GENERAL
 
   const componentMap = {
     home: <Home setTreeType={setTreeType} setRoute={setRoute} />,

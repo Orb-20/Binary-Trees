@@ -1,3 +1,4 @@
+// src/pages/Home.jsx
 import React from "react";
 import { motion } from "framer-motion";
 import ParticleTree3D from "../components/ParticleTree3D";
@@ -23,6 +24,7 @@ const AnimatedNodeWrapper = ({ children, delay }) => (
 );
 
 export default function Home({ setTreeType, setRoute }) {
+  // --- UPDATED: Removed AVL from this list ---
   const options = [
     { name: "Binary Tree", type: "BT", route: "theory" },
     { name: "Binary Search Tree", type: "BST", route: "theory" },
@@ -32,7 +34,6 @@ export default function Home({ setTreeType, setRoute }) {
 
   return (
     <div className="home-page-layout">
-      {/* 1. Stylish Title at the top */}
       <motion.h1
         className="home-title"
         initial={{ opacity: 0, y: -50 }}
@@ -42,14 +43,12 @@ export default function Home({ setTreeType, setRoute }) {
         TREES
       </motion.h1>
 
-      {/* 2. Redesigned Hierarchical Tree Info Section */}
       <div className="tree-info-container">
         <AnimatedNodeWrapper delay={0.2}>
           <TheoryNode title="What is a Tree?">
             A non-linear data structure representing hierarchical data. It consists of a root node, and connected child nodes.
           </TheoryNode>
           
-          {/* Children of the root node */}
           <div className="tree-children">
             <AnimatedNodeWrapper delay={0.4}>
               <TheoryNode title="Core Concepts">
@@ -62,7 +61,6 @@ export default function Home({ setTreeType, setRoute }) {
                 They provide efficient searching, insertion, and deletion. For balanced trees, these operations average O(log n) time.
               </TheoryNode>
               
-              {/* Grandchildren nodes */}
               <div className="tree-children">
                 <AnimatedNodeWrapper delay={0.8}>
                   <TheoryNode title="Real-World Examples">
@@ -71,7 +69,7 @@ export default function Home({ setTreeType, setRoute }) {
                 </AnimatedNodeWrapper>
                 <AnimatedNodeWrapper delay={1.0}>
                   <TheoryNode title="Common Types">
-                    Includes Binary Search Trees (BST), AVL Trees, Heaps, and Tries, each optimized for different tasks.
+                    Includes Binary Search Trees (BST), Heaps, and Tries, each optimized for different tasks.
                   </TheoryNode>
                 </AnimatedNodeWrapper>
               </div>
@@ -80,9 +78,7 @@ export default function Home({ setTreeType, setRoute }) {
         </AnimatedNodeWrapper>
       </div>
 
-      {/* 3. Main content area (Animation + Options) */}
       <div className="home-main-content">
-        {/* Left Side: Animation */}
         <motion.div
           className="animation-container"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -92,7 +88,6 @@ export default function Home({ setTreeType, setRoute }) {
           <ParticleTree3D />
         </motion.div>
 
-        {/* Right Side: Tree Options */}
         <motion.div
           className="options-container"
           initial="hidden"
