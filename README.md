@@ -1,4 +1,4 @@
-# Binary Trees — DSA Visualizer (minimal scaffold)
+# Binary Trees — DSA Visualizer
 
 How to run:
 1. Extract the zip.
