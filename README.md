@@ -63,7 +63,6 @@ The product is an educational front-end application. It is independent of a back
 * Display theory content and story-based explanations.
 * Show algorithm code snippets linked to visualizations.
 * Provide a quiz module.
-* Toggle themes (light/dark).
 
 ### 2.3 User Classes and Characteristics
 
@@ -94,7 +93,7 @@ The product is an educational front-end application. It is independent of a back
 
 ### 3.1 Home / Tree Selection
 
-* **Description**: Displays tree types (BST, AVL, RB, Heap, Tries).
+* **Description**: Displays tree types (Binary tree, BST, Heap, Tries).
 * **Stimulus/Response**: When the user clicks a tree type, the application navigates to the visualization page for that tree.
 * **Requirements**:
 
@@ -135,14 +134,6 @@ The product is an educational front-end application. It is independent of a back
   * The system shall present multiple-choice or short-answer quiz questions.
   * The system shall provide immediate feedback and explanations for answers.
 
-### 3.6 Theme Selector
-
-* **Description**: Enables toggling between light and dark modes.
-* **Requirements**:
-
-  * The system shall allow users to toggle between light and dark themes.
-  * The system shall persist the selected theme in local storage.
-
 ---
 
 ## 4. Specific Requirements
@@ -157,7 +148,6 @@ The product is an educational front-end application. It is independent of a back
 * Story Mode must include at least one scenario for each supported tree type.
 * The Algorithm page must display algorithm snippets and highlight visualization steps linked to code.
 * The Quiz module must record scores locally and provide feedback for each answer.
-* The Theme Selector must toggle between modes and remember user preference.
 * The application must be responsive and usable on screens as small as 360px width.
 
 ### 4.2 Non-Functional Requirements
