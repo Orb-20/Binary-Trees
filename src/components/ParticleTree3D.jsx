@@ -1,11 +1,11 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 // --- CONFIGURATION ---
-const yPositionOffset = -1.0; 
+const yPositionOffset = -1.0;
 const particlesPerNode = 80;
 const particlesPerLink = 45;
 const nodeRadius = 0.22;
@@ -44,7 +44,7 @@ function createParticleTargets(nodeCenters) {
   return { nodeTargets, linkTargets };
 }
 
-// --- ALL TREE & GRAPH GENERATORS (Positioned higher) ---
+// --- ALL TREE & GRAPH GENERATORS ---
 function generatePerfectBinaryTree({ levels = 3, width = 4.5, height = 4.5 }) {
     const nodeCenters = [];
     const top = height * 0.45;
@@ -115,6 +115,8 @@ function generateGridGraph({ width = 3, height = 3, spacing = 1.5 }) {
 function ParticleSystem() {
   const nodeRef = useRef();
   const linkRef = useRef();
+  const randomAttributes = useRef({});
+  const lastShapeIndex = useRef(-1);
 
   const shapes = useMemo(() => [
     generatePerfectBinaryTree({}),
@@ -125,55 +127,86 @@ function ParticleSystem() {
 
   const maxNodes = useMemo(() => Math.max(...shapes.map(s => s.nodeTargets.length)), [shapes]);
   const maxLinks = useMemo(() => Math.max(...shapes.map(s => s.linkTargets.length)), [shapes]);
+  
+  const hiddenParticle = useMemo(() => new THREE.Vector3(1000, 1000, 1000), []);
 
   const paddedShapes = useMemo(() => {
-    const hiddenParticle = new THREE.Vector3(0, -100, 0);
-    return shapes.map(shape => {
-      const paddedNodeTargets = [...shape.nodeTargets];
-      while (paddedNodeTargets.length < maxNodes) paddedNodeTargets.push(hiddenParticle);
-      
-      const paddedLinkTargets = [...shape.linkTargets];
-      while (paddedLinkTargets.length < maxLinks) paddedLinkTargets.push(hiddenParticle);
-      
-      return { nodeTargets: paddedNodeTargets, linkTargets: paddedLinkTargets };
-    });
-  }, [shapes, maxNodes, maxLinks]);
+    return shapes.map(shape => ({
+      nodeTargets: [...shape.nodeTargets].concat(Array(Math.max(0, maxNodes - shape.nodeTargets.length)).fill(hiddenParticle)),
+      linkTargets: [...shape.linkTargets].concat(Array(Math.max(0, maxLinks - shape.linkTargets.length)).fill(hiddenParticle)),
+    }));
+  }, [shapes, maxNodes, maxLinks, hiddenParticle]);
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
+  
+  const animateParticles = (ref, maxCount, shapes, shapeIndex, nextShapeIndex, morphT, baseScale, randoms) => {
+    if (!ref.current) return;
+    
+    const currentTargets = shapes[shapeIndex];
+    const nextTargets = shapes[nextShapeIndex];
+
+    for (let i = 0; i < maxCount; i++) {
+      const startPos = currentTargets[i];
+      const endPos = nextTargets[i];
+
+      const isHiddenInStart = startPos.x > 999;
+      const isHiddenInEnd = endPos.x > 999;
+
+      let finalPos;
+      if (isHiddenInStart && !isHiddenInEnd) { // Appearing
+        const randomStartPos = randoms[i].clone().add(endPos);
+        finalPos = new THREE.Vector3().lerpVectors(randomStartPos, endPos, morphT);
+      } else if (!isHiddenInStart && isHiddenInEnd) { // Disappearing
+        const randomEndPos = randoms[i].clone().add(startPos);
+        finalPos = new THREE.Vector3().lerpVectors(startPos, randomEndPos, morphT);
+      } else { // Moving or staying hidden
+        finalPos = new THREE.Vector3().lerpVectors(startPos, endPos, morphT);
+      }
+      
+      dummy.position.copy(finalPos);
+      
+      let scale = baseScale;
+      const easeInOutCubic = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const appearT = easeInOutCubic(Math.min(1, morphT * 2));
+      const disappearT = easeInOutCubic(Math.max(0, 1 - (morphT * 2)));
+
+      if (isHiddenInStart && !isHiddenInEnd) {
+        scale *= appearT;
+      } else if (!isHiddenInStart && isHiddenInEnd) {
+        scale *= disappearT;
+      } else if (isHiddenInStart && isHiddenInEnd) {
+        scale = 0;
+      }
+      
+      dummy.scale.setScalar(Math.max(0, scale));
+      dummy.updateMatrix();
+      ref.current.setMatrixAt(i, dummy.matrix);
+    }
+    ref.current.instanceMatrix.needsUpdate = true;
+  };
 
   useFrame(({ clock }) => {
-    if (!nodeRef.current || !linkRef.current) return;
-    
     const t = clock.getElapsedTime();
     const cycleDuration = 7;
     const cycleTime = t % cycleDuration;
     const shapeIndex = Math.floor(t / cycleDuration) % shapes.length;
     const nextShapeIndex = (shapeIndex + 1) % shapes.length;
     
+    if (shapeIndex !== lastShapeIndex.current) {
+        randomAttributes.current.nodes = Array.from({ length: maxNodes }, () => new THREE.Vector3().randomDirection().multiplyScalar(Math.random() * 1.5));
+        randomAttributes.current.links = Array.from({ length: maxLinks }, () => new THREE.Vector3().randomDirection().multiplyScalar(Math.random() * 1.0));
+        lastShapeIndex.current = shapeIndex;
+    }
+
     const progress = cycleTime / cycleDuration;
     const morphT = 0.5 - 0.5 * Math.cos(progress * Math.PI);
 
-    const currentShape = paddedShapes[shapeIndex];
-    const nextShape = paddedShapes[nextShapeIndex];
-    
-    // Animate Nodes
-    for (let i = 0; i < maxNodes; i++) {
-      dummy.position.lerpVectors(currentShape.nodeTargets[i], nextShape.nodeTargets[i], morphT);
-      dummy.scale.setScalar(0.035);
-      dummy.updateMatrix();
-      nodeRef.current.setMatrixAt(i, dummy.matrix);
+    if (randomAttributes.current.nodes) {
+        animateParticles(nodeRef, maxNodes, paddedShapes.map(s => s.nodeTargets), shapeIndex, nextShapeIndex, morphT, 0.035, randomAttributes.current.nodes);
     }
-    
-    // Animate Links
-    for (let i = 0; i < maxLinks; i++) {
-      dummy.position.lerpVectors(currentShape.linkTargets[i], nextShape.linkTargets[i], morphT);
-      dummy.scale.setScalar(0.025);
-      dummy.updateMatrix();
-      linkRef.current.setMatrixAt(i, dummy.matrix);
+    if (randomAttributes.current.links) {
+        animateParticles(linkRef, maxLinks, paddedShapes.map(s => s.linkTargets), shapeIndex, nextShapeIndex, morphT, 0.025, randomAttributes.current.links);
     }
-
-    nodeRef.current.instanceMatrix.needsUpdate = true;
-    linkRef.current.instanceMatrix.needsUpdate = true;
   });
 
   return (

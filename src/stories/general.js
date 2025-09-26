@@ -1,28 +1,25 @@
-export const generalTreeStory = `Imagine a big company called Tree Corp.
+export const generalTreeStory = `Imagine a large corporation named Tree Corp.
 
-At the very top, there’s one CEO.
+At the very top, there is a single CEO. This CEO is the Root of the company. The CEO hires a few managers, who are the Nodes of our corporate tree. Each manager, in turn, can hire their own team members, creating more nodes.
 
-👉 This CEO is the Root of the company.
-The CEO hires a few managers.
+- Every employee has only one direct supervisor (a parent), but a supervisor can manage multiple employees (children).
 
-👉 These are the Nodes.
-Each manager can hire their own team members (more nodes).
+- Some employees do not manage anyone; they are the Leaves of the company.
 
-👉 Every employee has only one boss (one parent), but a boss can have many employees (children).
-Some employees don’t hire anyone under them — they’re just chilling.
+There is a strict rule at Tree Corp: no employee can be their own boss, which means there are no loops in the hierarchy. The structure always flows downward from the CEO to the managers and their teams.
 
-👉 These are the Leaves of the company.
-And here’s the rule in Tree Corp:
+Why is Tree Corp so successful?
 
-No employee can ever be their own boss (no loops).
-The structure always flows downward from CEO -> Managers -> Teams.
-Why is Tree Corp successful?
+- Organized hierarchy: It's clear who reports to whom.
 
-🗂️ Organized hierarchy -> You instantly know who reports to whom.
-🔍 Easy searching -> To find any employee, just follow the chain from the CEO.
-🚀 Flexible growth -> New hires can easily be added under the right manager.
-👉 So in DSA, a Tree is just like Tree Corp’s hierarchy:
+- Easy searching: To find any employee, you simply follow the chain of command from the CEO.
 
-Root = CEO
-Nodes = Managers/Employees
-Leaves = Chill employees with no team.`;
+- Flexible growth: New employees can be easily added under the appropriate manager.
+
+In the world of data structures and algorithms, a Tree is just like Tree Corp’s hierarchy:
+
+- Root: The CEO
+
+- Nodes: Managers and Employees
+
+- Leaves: Employees who do not manage anyone.`;

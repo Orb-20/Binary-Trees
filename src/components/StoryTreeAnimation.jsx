@@ -1,11 +1,29 @@
 import React, { useMemo, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber'; // CORRECTED IMPORT
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Line, Bounds } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Tree Data for Each Story ---
-// Defines the nodes, their labels, values, and positions for each story.
 const treeData = {
+  GENERAL: {
+    nodes: [
+      { id: 1, label: 'CEO', position: [0, 2, 0] },
+      { id: 2, label: 'Manager', position: [-3, 0, 0] },
+      { id: 3, label: 'Manager', position: [0, 0, 0] },
+      { id: 4, label: 'Manager', position: [3, 0, 0] },
+      { id: 5, label: 'Team', position: [-4, -2, 0] },
+      { id: 6, label: 'Team', position: [-2, -2, 0] },
+      { id: 7, label: 'Team', position: [3, -2, 0] },
+    ],
+    links: [
+      { start: 1, end: 2 },
+      { start: 1, end: 3 },
+      { start: 1, end: 4 },
+      { start: 2, end: 5 },
+      { start: 2, end: 6 },
+      { start: 4, end: 7 },
+    ],
+  },
   BT: {
     nodes: [
       { id: 1, label: 'CEO', position: [0, 2, 0] },
@@ -55,7 +73,21 @@ const treeData = {
       { start: 3, end: 6 },
     ],
   },
-  // Default case if no specific tree is found
+  TRIES: {
+    nodes: [
+      { id: 1, label: '', position: [0, 2.5, 0] },
+      { id: 2, label: 'C', position: [0, 1, 0] },
+      { id: 3, label: 'A', position: [0, -0.5, 0] },
+      { id: 4, label: 'T', position: [-1.5, -2, 0] },
+      { id: 5, label: 'R', position: [1.5, -2, 0] },
+    ],
+    links: [
+      { start: 1, end: 2 },
+      { start: 2, end: 3 },
+      { start: 3, end: 4 },
+      { start: 3, end: 5 },
+    ],
+  },
   DEFAULT: {
     nodes: [{ id: 1, label: 'Node', position: [0, 0, 0] }],
     links: [],
@@ -64,26 +96,27 @@ const treeData = {
 
 // --- Sub-Components for the 3D Scene ---
 
-// Renders a single node (sphere) and its labels
 function Node({ position, label, value }) {
   const ref = useRef();
-  // Gentle floating animation for each node
   useFrame(({ clock }) => {
     ref.current.position.y = position[1] + Math.sin(clock.getElapsedTime() + position[0]) * 0.1;
   });
+
+  const isTrieLetter = !value && label && label.length === 1;
 
   return (
     <group position={position} ref={ref}>
       <mesh>
         <sphereGeometry args={[0.4, 32, 32]} />
-        <meshStandardMaterial color="#0FA683" roughness={0.5} metalness={0.5} />
+        <meshStandardMaterial color="#032F2F" roughness={0.5} metalness={0.5} />
       </mesh>
       <Text
-        position={[0, 0.7, 0]}
-        fontSize={0.3}
-        color="#032F2F"
+        position={[0, 0.8, 0]}
+        fontSize={isTrieLetter ? 0.6 : 0.3}
+        color="#0B0F13"
         anchorX="center"
         anchorY="middle"
+        fontWeight={isTrieLetter ? 'bold' : 'normal'}
       >
         {label}
       </Text>
@@ -103,17 +136,14 @@ function Node({ position, label, value }) {
   );
 }
 
-// Renders the entire tree structure
 function TreeScene({ type }) {
   const data = useMemo(() => treeData[type] || treeData.DEFAULT, [type]);
   const groupRef = useRef();
 
-  // Gentle rotation animation for the whole tree
   useFrame(({ clock }) => {
     groupRef.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.2) * 0.2;
   });
 
-  // Create a map for quick node position lookup
   const nodeMap = useMemo(() => {
     const map = new Map();
     data.nodes.forEach(node => map.set(node.id, node.position));
@@ -122,11 +152,14 @@ function TreeScene({ type }) {
 
   return (
     <group ref={groupRef}>
-      {/* Render all nodes */}
       {data.nodes.map(node => (
-        <Node key={node.id} position={node.position} label={node.label} value={node.value} />
+        <Node 
+          key={node.id} 
+          position={node.position} 
+          label={node.label} 
+          value={node.value} 
+        />
       ))}
-      {/* Render all links */}
       {data.links.map((link, index) => {
         const startPos = nodeMap.get(link.start);
         const endPos = nodeMap.get(link.end);
@@ -151,7 +184,6 @@ export default function StoryTreeAnimation({ treeType }) {
       <ambientLight intensity={0.8} />
       <pointLight position={[10, 10, 10]} intensity={1.5} />
       
-      {/* This Bounds component automatically fits the camera to the scene */}
       <Bounds fit clip observe margin={1.2}>
         <TreeScene type={treeType} />
       </Bounds>

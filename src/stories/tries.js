@@ -1,34 +1,30 @@
 export const trieStory = `Tree Corp: The “Dictionary Department” (Tries)
-In Tree Corp, after all the rules about teammates and hierarchies, the CEO noticed a new problem.
-People kept mixing up names, words, and codes when storing data.
+At Tree Corp, after establishing clear hierarchies, the CEO noticed a new challenge: employees were frequently mixing up names, words, and codes when storing data. To solve this, a new department was created: the "Dictionary Department."
 
-So the CEO opened a new branch:
-The Dictionary Department
-Here’s how it worked:
+In this department, each letter of a word is represented by a unique team member (a node). Starting from the Root (an empty page in a dictionary), each team member represents one letter in a word.
 
-Each letter of a word got its own teammate (node).
-Starting from the Root (like the empty page of a dictionary), every teammate represented one step/letter in a word.
-Example:
+For example, to store the word “CAT”:
 
-To store the word “CAT”:
-First teammate = C
-From C’s team = A
-From A’s team = T
-Boom — the word CAT is built step by step in the org chart.
-Now if another word like “CAR” comes:
+- The first team member is 'C'.
 
-It still starts with C -> A (same path as CAT).
-But instead of T, a new teammate R joins.
-✨ That’s the magic of the Dictionary Department:
+- On C's team, there is an 'A'.
 
-Common beginnings (prefixes) are shared.
-Words branch only when they differ.
-Why Tree Corp loves this system:
+- On A's team, there is a 'T'.
 
-🏎️ Fast searching -> Want to check if a word exists? Just follow the letters down.
-🧩 Memory saving -> No need to repeat prefixes again and again.
-📖 Perfect for auto-complete -> Start typing “CA” and boom, you instantly see CAT, CAR, CAN, etc.
-👉 In short:
+The word "CAT" is now built, step-by-step, within the organizational chart. If another word like “CAR” is added, it shares the same path for "C" and "A". However, instead of "T", a new team member, "R", joins "A"'s team. The magic of this department lies in its structure:
 
-Trie = A Tree where each level stores a part of a word (like letters), and paths form words.
-Think of it as Tree Corp’s dictionary team, where teammates line up to spell out words together.`;
+- Common beginnings (prefixes) are shared, saving space.
+
+- Words branch off only where they differ.
+
+This system provides significant advantages for the company:
+
+- Fast searching: To check if a word exists, you just follow the letters down the hierarchy.
+
+- Memory saving: Prefixes are not repeated for every word.
+
+- Perfect for auto-complete: Start typing “CA,” and you can instantly find all words that begin with that prefix.
+
+In short:
+
+! A Trie is a tree where each level stores a part of a word, and the paths from the root form complete words. It acts as Tree Corp’s own dictionary team, where members line up to spell out words.`;

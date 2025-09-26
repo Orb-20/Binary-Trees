@@ -1,30 +1,24 @@
 export const heapStory = `Tree Corp: The “Strongest on Top” Rule (Heap)
-In Tree Corp, the CEO wasn’t fully satisfied.
+Even with the Two-Teammate and Sorted Teammates policies in place, the CEO of Tree Corp felt there was room for improvement. A new, golden rule was announced: the "Strongest-on-Top Policy."
 
-Yes, the company had the Two-Teammate Policy (Binary Tree) and even the Sorted Teammates Policy (BST)…
+This system ensures a manager (parent) is always "stronger" than their team members (children):
 
-…but things were still a bit messy.
-So the CEO announced a brand-new golden rule:
+- In a Max-Heap, the manager always has the highest value compared to their team members.
 
-The Strongest-on-Top Policy
-Here’s how it works:
+- In a Min-Heap, the manager always has the lowest value.
 
-In this system, the boss (parent) must always be stronger or more powerful than their teammates (children).
-This means:
-In a Max-Heap, the boss always has the highest value compared to their teammates. (CEO flexes the hardest).
-In a Min-Heap, the boss always has the lowest value compared to their teammates. (CEO is the most humble).
-So at every level of Tree Corp:
+At every level of Tree Corp, the manager is either the strongest (Max-Heap) or the weakest (Min-Heap). Unlike a BST, the order of left versus right team members doesn't matter. The only thing that counts is the relationship between a manager and their direct reports. This provides several key benefits:
 
-The boss is always either the strongest (Max-Heap) or the weakest (Min-Heap).
-But — unlike BST — we don’t care about left vs right order. Only one thing matters: the boss must dominate their squad.
+- Quick access: Need to find the strongest (or weakest) team member? They're always at the top (the root).
 
-Why Tree Corp loves this rule:
+- Efficiency: Promotions and demotions (insertions and deletions) are handled quickly while maintaining the structure.
 
-⚡ Quick access -> Need the strongest (or weakest) teammate? Just look at the top (the root).
-🔄 Efficiency -> Promotions/demotions (insert/delete) happen fast while keeping the “Strongest-on-Top” vibe.
-🎯 Perfect for tasks like priority jobs, leaderboards, or scheduling.
-👉 In short:
+- Versatility: The structure is perfect for tasks like managing priority jobs, creating leaderboards, or scheduling.
 
-Binary Tree Corp = Max 2 teammates.
-BST Corp = Teammates sorted (left smaller, right bigger).
-Heap Corp = Parent always stronger (Max-Heap) or weaker (Min-Heap) than teammates.`;
+In short:
+
+- A Binary Tree Corp has a maximum of two team members per manager.
+
+- A BST Corp sorts team members by value (left is smaller, right is bigger).
+
+! - A Heap Corp ensures that a parent is always stronger (Max-Heap) or weaker (Min-Heap) than their children.`;

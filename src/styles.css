@@ -382,15 +382,15 @@ pre.code-block {
 
 .story-text-section {
   font-family: 'Lato', sans-serif;
-  font-size: 1rem; /* Final size reduction */
-  line-height: 1.75; /* Tightened line spacing */
+  font-size: 1rem;
+  line-height: 1.75;
   color: #34495e;
   max-width: 70ch;
 }
 
 .story-text-section > div {
   white-space: pre-wrap;
-  margin-bottom: 1.25rem; /* Tightened paragraph spacing */
+  margin-bottom: 1.25rem;
 }
 
 .story-paragraph {
@@ -400,15 +400,14 @@ pre.code-block {
 
 .story-subheading {
   font-family: 'Montserrat', sans-serif;
-  font-size: 1.1rem; /* Final reduction for bold font size */
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
   color: var(--color-deep-forest);
   margin-top: 2rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0;
-  border-bottom: none;
-  text-transform: uppercase;
-  letter-spacing: 1.5px; /* Added letter spacing */
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-antique-gold);
+  letter-spacing: 0.5px;
 }
 
 .story-bullet {
@@ -428,41 +427,14 @@ pre.code-block {
   flex-shrink: 0;
 }
 
-.story-highlight {
-  font-family: 'Lato', sans-serif;
-  font-style: italic;
-  color: #34495e;
-  background-color: transparent;
-  border-left: 3px solid var(--color-antique-gold);
-  padding: 0.5rem 1.5rem;
-  margin: 2rem 0;
-  border-radius: 0;
-}
-
-.story-feature {
-    font-family: 'Lato', sans-serif;
-    font-size: 1rem;
-    padding-left: 1rem;
-    display: flex;
-    align-items: center;
-    line-height: 1.6;
-}
-
-.story-feature::before {
-  content: attr(data-icon);
-  background-color: transparent;
-  border-radius: 0;
-  width: auto;
-  height: auto;
-  font-size: 1.5rem;
-  flex-shrink: 0;
-  margin-right: 12px;
+.story-text-section > .story-bullet {
+  margin-bottom: 0.75rem;
 }
 
 .story-summary {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
-  font-size: 1rem; /* Final reduction for bold font size */
+  font-size: 1rem;
   background-color: transparent;
   margin-top: 2rem;
   padding: 1.5rem 0;
@@ -471,7 +443,7 @@ pre.code-block {
   border-top: 1px solid rgba(3, 47, 47, 0.2);
   border-radius: 0;
   position: relative;
-  letter-spacing: 0.5px; /* Added letter spacing */
+  letter-spacing: 0.5px;
 }
 
 .story-summary::after {
@@ -499,6 +471,33 @@ pre.code-block {
 .story-visual-section canvas {
   width: 100%;
   height: 100%;
+}
+
+.story-rule {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-align: left;
+  color: var(--color-deep-forest);
+  background-color: rgba(217, 207, 196, 0.2);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid var(--color-antique-gold);
+  border-radius: var(--radius-md);
+  letter-spacing: 0.2px;
+  line-height: 1.6;
+}
+
+/* --- NEW --- Style for the summary callout box */
+.story-summary-bullet {
+  font-family: 'Lato', sans-serif;
+  color: var(--color-deep-forest);
+  background-color: rgba(217, 207, 196, 0.3);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.25rem;
+  border-left: 4px solid var(--color-antique-gold);
+  border-radius: var(--radius-md);
+  line-height: 1.6;
 }
 
 /* Responsive adjustments */

@@ -23,8 +23,8 @@ const containerVariants = {
 };
 
 export default function StoryMode({ treeType }) {
-  const story = STORIES[treeType] || STORIES['BT'];
-  const title = treeType === 'BT' ? 'The Story of Trees' : `Story Mode — ${treeType}`;
+  const story = STORIES[treeType] || STORIES['GENERAL'];
+  const title = treeType === 'GENERAL' ? 'The Story of Trees' : `Story Mode — ${treeType}`;
 
   const renderParagraphBlock = (block, index) => {
     block = block.trim();
@@ -32,14 +32,16 @@ export default function StoryMode({ treeType }) {
 
     let className = 'story-paragraph';
     
-    if (block.includes('Tree Corp:')) {
+    if (block.toUpperCase().includes('STRICT RULE')) {
+      className = 'story-rule';
+    } else if (block.includes('Tree Corp:')) {
       className = 'story-subheading';
-    } else if (block.startsWith('👉')) {
+    } else if (block.startsWith('!')) {
+      className = 'story-summary-bullet';
+      block = block.substring(1).trim();
+    } else if (block.startsWith('-')) {
       className = 'story-bullet';
-    } else if (block.startsWith('✨')) {
-      className = 'story-highlight';
-    } else if (/^[\🗂️🔍🚀⚡🔄🎯🏎️🧩📖]/.test(block)) {
-      className = 'story-feature';
+      block = block.substring(1).trim();
     } else if (block.toLowerCase().startsWith('in short:')) {
       className = 'story-summary';
     }
@@ -76,7 +78,6 @@ export default function StoryMode({ treeType }) {
             {paragraphs.map(renderParagraphBlock)}
           </motion.div>
           
-          {/* --- REPLACEMENT --- */}
           <div className="story-visual-section">
             <StoryTreeAnimation treeType={treeType} />
           </div>

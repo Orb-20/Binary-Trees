@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const THEORIES = {
-  BT: `What is a Tree?\nA Tree is a fundamental non-linear data structure that represents hierarchical data. It consists of a collection of nodes connected by edges, with one node designated as the Root.
+  GENERAL: `What is a Tree?\nA Tree is a fundamental non-linear data structure that represents hierarchical data. It consists of a collection of nodes connected by edges, with one node designated as the Root. Each node can have zero or more child nodes, and each child has exactly one parent, except for the root, which has no parent.
   \nKey Concepts:
   - Root: The topmost node in the tree, from which all other nodes descend.
   - Parent: A node that has child nodes.
@@ -15,6 +15,16 @@ const THEORIES = {
   - AVL & Red-Black Trees: Self-balancing BSTs that guarantee efficient operations.
   - Heaps: Specialized trees used for priority queues, with either the max or min element at the root.
   - Tries: Trees used for efficiently storing and retrieving strings.`,
+  BT: `What is a Binary Tree?\nA Binary Tree is a specialized tree data structure where each node can have at most two children, referred to as the left child and the right child. This simple constraint leads to a wide variety of applications and further specialized tree types.
+  \nKey Properties:
+  - Each node contains a value or key.
+  - Each node has a pointer to a left child and a right child, which can be null.
+  - The path from the root to any node is unique.
+  \nTypes of Binary Trees:
+  - Full Binary Tree: Every node has either 0 or 2 children.
+  - Complete Binary Tree: All levels are completely filled except possibly for the last level, which is filled from left to right.
+  - Perfect Binary Tree: A full binary tree where all leaf nodes are at the same level.
+  - Skewed Binary Tree: Each node is connected to only one child (either left or right), resembling a linked list.`,
   BST: `Binary Search Tree (BST)\nA BST is a special type of binary tree where the data is organized in a sorted manner. For any given node:
   - All values in the left subtree are less than the node's value.
   - All values in the right subtree are greater than the node's value.
@@ -36,16 +46,17 @@ const THEORIES = {
   HEAP: `Heap\nA Heap is a specialized tree-based data structure that is essentially a nearly complete binary tree. Heaps come in two main types:
   - Max-Heap: The value of each node is greater than or equal to the value of its children. The root node is the largest element.
   - Min-Heap: The value of each node is less than or equal to the value of its children. The root node is the smallest element.
-  \nHeaps are commonly used to implement Priority Queues and for algorithms like Heapsort.`,
+  \nHeaps are commonly used to implement Priority Queues and for algorithms like Heapsort. The heap property (either max or min) must be maintained after every insertion and deletion, which is done through a process called "heapifying".`,
   TRIES: `Trie (Prefix Tree)\nA Trie is a tree-like data structure that is efficient for storing and retrieving strings. Each node represents a single character, and the path from the root to a node represents a prefix.
   \nAdvantages:
   - Tries can insert and find strings in O(L) time, where L is the length of the string.
-  - They are highly effective for applications like autocomplete, spell checkers, and IP routing.`,
+  - They are highly effective for applications like autocomplete, spell checkers, and IP routing.
+  \nEach node in a Trie can have multiple children, one for each possible character in the alphabet being used.`,
 };
 
 export default function Theory({ treeType }) {
-  const text = THEORIES[treeType] || THEORIES["BT"];
-  const title = treeType === 'BT' ? 'Introduction to Trees' : `Theory — ${treeType}`;
+  const text = THEORIES[treeType] || THEORIES["GENERAL"];
+  const title = treeType === 'GENERAL' ? 'Introduction to Trees' : `Theory — ${treeType}`;
 
   return (
     <div>

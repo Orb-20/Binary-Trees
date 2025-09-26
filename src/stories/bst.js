@@ -1,26 +1,22 @@
 export const binarySearchTreeStory = `Tree Corp: The “Sorted Teammates Policy” (BST)
-In Tree Corp, the CEO already made the Two-Teammate Policy (Binary Tree rule: max 2 teammates under each person).
-But now the CEO wants things to be more organized. So a new rule drops:
+At Tree Corp, the CEO has already implemented the Two-Teammate Policy, establishing a Binary Tree structure. Now, to enhance organization, a new rule is introduced: the "Sorted Teammates Policy."
 
-The Sorted Teammates Policy
-Here’s how it works:
+This policy dictates that for any manager:
 
-If a teammate joins with a lower rank/value than the boss -> they go to the left side.
-If a teammate joins with a higher rank/value than the boss -> they go to the right side.
-And this rule isn’t just for the CEO.
+- If a new team member has a lower rank or value, they are placed on the left side.
 
-Every manager and teammate in Tree Corp follows the same rule for their own left and right teammates.
-So the whole company becomes like a sorted org chart:
+- If a new team member has a higher rank or value, they are placed on the right side.
 
-Left side always has “smaller” teammates.
-Right side always has “bigger” teammates.
+This rule is not just for the CEO's direct reports; every manager and team lead in Tree Corp follows the same principle for their own team members, turning the entire company into a perfectly sorted organizational chart. The advantages are immediately apparent:
 
-Why Tree Corp loves this rule:
+- Faster searching: To find an employee, you simply navigate left for lower ranks or right for higher ranks until you find them.
 
-🏃 Faster searching -> Want to find someone? Don’t check everyone. Just keep going left for smaller or right for bigger until you find them.
-🗂️ Organized growth -> As new teammates join, they automatically know where they belong.
-🔎 Clear hierarchy -> No confusion, no mess, all sorted.
-👉 So in short:
+- Organized growth: As new employees join, their position in the hierarchy is automatically determined.
 
-Binary Tree Corp = Max 2 teammates under any manager.
-BST Corp = Same, but sorted by rank/value: left is smaller, right is bigger.`;
+- Clear hierarchy: The structure is clean, organized, and easy to understand.
+
+In short:
+
+- A Binary Tree Corp has a maximum of two team members under any manager.
+
+! - A BST Corp follows the same rule but sorts team members by their rank or value: left is for lower, and right is for higher.`;
