@@ -12,11 +12,11 @@ import LightRays from "./components/LightRays";
 
 export default function App() {
   const [route, setRoute] = useState("home");
-  const [treeType, setTreeType] = useState("GENERAL"); // Changed to GENERAL
+  const [treeType, setTreeType] = useState("GENERAL");
 
   const componentMap = {
     home: <Home setTreeType={setTreeType} setRoute={setRoute} />,
-    theory: <Theory treeType={treeType} />,
+    theory: <Theory treeType={treeType} setRoute={setRoute} />,
     story: <StoryMode treeType={treeType} />,
     algorithm: <Algorithm treeType={treeType} />,
     quiz: <Quiz treeType={treeType} />,

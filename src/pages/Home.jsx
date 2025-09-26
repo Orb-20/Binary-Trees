@@ -24,7 +24,6 @@ const AnimatedNodeWrapper = ({ children, delay }) => (
 );
 
 export default function Home({ setTreeType, setRoute }) {
-  // --- UPDATED: Removed AVL from this list ---
   const options = [
     { name: "Binary Tree", type: "BT", route: "theory" },
     { name: "Binary Search Tree", type: "BST", route: "theory" },
@@ -93,7 +92,7 @@ export default function Home({ setTreeType, setRoute }) {
           initial="hidden"
           animate="visible"
           variants={{
-            visible: { transition: { staggerChildren: 0.15, delayChildren: 1.4 } },
+            visible: { transition: { staggerChildren: 0.1, delayChildren: 1.4 } },
           }}
         >
           {options.map((opt) => (

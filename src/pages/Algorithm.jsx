@@ -1,159 +1,157 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import algorithms from '../data/algorithms.json';
 
-const InsertionCode = () => (
-    <pre className="code-block">
-        <span className="keyword">function</span> <span className="function-name">insert</span><span className="punctuation">(</span>node, <span className="value">value</span><span className="punctuation">)</span><span className="punctuation">{'{'}</span>
-        {'\n  '}<span className="comment">{'// If the tree is empty, return a new node'}</span>
-        {'\n  '}<span className="control">if</span><span className="punctuation">(</span>node <span className="operator">==</span> <span className="builtin">null</span><span className="punctuation">)</span> <span className="control">return</span> <span className="builtin">new</span> Node<span className="punctuation">(</span>value<span className="punctuation">)</span>
-        {'\n'}
-        {'\n  '}<span className="comment">{'// Otherwise, recur down the tree'}</span>
-        {'\n  '}<span className="control">if</span><span className="punctuation">(</span>value <span className="operator">&lt;</span> node.value<span className="punctuation">)</span> <span className="punctuation">{'{'}</span>
-        {'\n    '}node.left <span className="operator">=</span> <span className="function-name">insert</span><span className="punctuation">(</span>node.left, value<span className="punctuation">)</span>
-        {'\n  '}<span className="punctuation">{'}'}</span> <span className="control">else</span> <span className="punctuation">{'{'}</span>
-        {'\n    '}node.right <span className="operator">=</span> <span className="function-name">insert</span><span className="punctuation">(</span>node.right, value<span className="punctuation">)</span>
-        {'\n  '}<span className="punctuation">{'}'}</span>
-        {'\n'}
-        {'\n  '}<span className="comment">{'// return the (unchanged) node pointer'}</span>
-        {'\n  '}<span className="control">return</span> node
-        {'\n'}<span className="punctuation">{'}'}</span>
-    </pre>
-);
+// --- Syntax Highlighting Function ---
+// This function now processes one line at a time.
+const highlightSyntax = (line, language) => {
+  if (!line) return '';
 
-const SearchCode = () => (
-    <pre className="code-block">
-        <span className="keyword">function</span> <span className="function-name">search</span><span className="punctuation">(</span>node, <span className="value">value</span><span className="punctuation">)</span><span className="punctuation">{'{'}</span>
-        {'\n  '}<span className="comment">{'// Base Cases: root is null or value is present at root'}</span>
-        {'\n  '}<span className="control">if</span><span className="punctuation">(</span>node <span className="operator">==</span> <span className="builtin">null</span> <span className="operator">||</span> node.value <span className="operator">==</span> value<span className="punctuation">)</span> <span className="control">return</span> node
-        {'\n'}
-        {'\n  '}<span className="comment">{'// Value is greater than root\'s key'}</span>
-        {'\n  '}<span className="control">if</span><span className="punctuation">(</span>node.value <span className="operator">&lt;</span> value<span className="punctuation">)</span> <span className="punctuation">{'{'}</span>
-        {'\n    '}<span className="control">return</span> <span className="function-name">search</span><span className="punctuation">(</span>node.right, value<span className="punctuation">)</span>
-        {'\n  '}<span className="punctuation">{'}'}</span>
-        {'\n'}
-        {'\n  '}<span className="comment">{'// Value is smaller than root\'s key'}</span>
-        {'\n  '}<span className="control">return</span> <span className="function-name">search</span><span className="punctuation">(</span>node.left, value<span className="punctuation">)</span>
-        {'\n'}<span className="punctuation">{'}'}</span>
-    </pre>
-);
+  const keywords = {
+    cpp: [
+      '#include', 'using', 'namespace', 'std', 'int', 'void', 'struct', 'class', 'public', 'private',
+      'if', 'else', 'while', 'for', 'return', 'new', 'delete', 'nullptr', 'const', 'enum', 'auto',
+      '#define', 'bool', 'true', 'false', 'cout', 'cin', 'vector', 'queue', 'string', 'pair', 'swap',
+      'throw', 'runtime_error'
+    ],
+    java: [
+      'import', 'java', 'util', 'public', 'class', 'private', 'void', 'int', 'if', 'else', 'while',
+      'for', 'return', 'new', 'null', 'final', 'boolean', 'true', 'false', 'System', 'out', 'print',
+      'println', 'enum', 'throws', 'static', 'package'
+    ],
+  };
 
-const AVLBalancingCode = () => (
-    <pre className="code-block">
-        <span className="keyword">function</span> <span className="function-name">insert</span><span className="punctuation">(</span>node, <span className="value">value</span><span className="punctuation">)</span><span className="punctuation">{'{'}</span>
-        {'\n  '}<span className="comment">{'// 1. Perform standard BST insertion'}</span>
-        {'\n  ...'}
-        {'\n'}
-        {'\n  '}<span className="comment">{'// 2. Update height of the current node'}</span>
-        {'\n  '}node.height <span className="operator">=</span> <span className="value">1</span> <span className="operator">+</span> <span className="function-name">max</span><span className="punctuation">(</span><span className="function-name">height</span><span className="punctuation">(</span>node.left<span className="punctuation">)</span>, <span className="function-name">height</span><span className="punctuation">(</span>node.right<span className="punctuation">))</span>
-        {'\n'}
-        {'\n  '}<span className="comment">{'// 3. Get the balance factor'}</span>
-        {'\n  '}<span className="keyword">let</span> balance <span className="operator">=</span> <span className="function-name">getBalance</span><span className="punctuation">(</span>node<span className="punctuation">)</span>
-        {'\n'}
-        {'\n  '}<span className="comment">{'// 4. If unbalanced, then there are 4 cases'}</span>
-        {'\n  '}<span className="comment">{'// Left Left Case'}</span>
-        {'\n  '}<span className="control">if</span> <span className="punctuation">(</span>balance <span className="operator">&gt;</span> <span className="value">1</span> <span className="operator">&&</span> value <span className="operator">&lt;</span> node.left.value<span className="punctuation">)</span> <span className="control">return</span> <span className="function-name">rightRotate</span><span className="punctuation">(</span>node<span className="punctuation">)</span>
-        {'\n'}
-        {'\n  '}<span className="comment">{'// Right Right Case'}</span>
-        {'\n  '}<span className="control">if</span> <span className="punctuation">(</span>balance <span className="operator">&lt;</span> <span className="value">-1</span> <span className="operator">&&</span> value <span className="operator">&gt;</span> node.right.value<span className="punctuation">)</span> <span className="control">return</span> <span className="function-name">leftRotate</span><span className="punctuation">(</span>node<span className="punctuation">)</span>
-        {'\n'}
-        {'\n  '}<span className="comment">{'// Left Right Case'}</span>
-        {'\n  '}<span className="control">if</span> <span className="punctuation">(</span>balance <span className="operator">&gt;</span> <span className="value">1</span> <span className="operator">&&</span> value <span className="operator">&gt;</span> node.left.value<span className="punctuation">)</span> <span className="punctuation">{'{'}</span>
-        {'\n    '}node.left <span className="operator">=</span> <span className="function-name">leftRotate</span><span className="punctuation">(</span>node.left<span className="punctuation">)</span>
-        {'\n    '}<span className="control">return</span> <span className="function-name">rightRotate</span><span className="punctuation">(</span>node<span className="punctuation">)</span>
-        {'\n  '}<span className="punctuation">{'}'}</span>
-        {'\n'}
-        {'\n  '}<span className="comment">{'// Right Left Case'}</span>
-        {'\n  '}<span className="control">if</span> <span className="punctuation">(</span>balance <span className="operator">&lt;</span> <span className="value">-1</span> <span className="operator">&&</span> value <span className="operator">&lt;</span> node.right.value<span className="punctuation">)</span> <span className="punctuation">{'{'}</span>
-        {'\n    '}node.right <span className="operator">=</span> <span className="function-name">rightRotate</span><span className="punctuation">(</span>node.right<span className="punctuation">)</span>
-        {'\n    '}<span className="control">return</span> <span className="function-name">leftRotate</span><span className="punctuation">(</span>node<span className="punctuation">)</span>
-        {'\n  '}<span className="punctuation">{'}'}</span>
-        {'\n'}
-        {'\n  '}<span className="control">return</span> node
-        {'\n'}<span className="punctuation">{'}'}</span>
-    </pre>
-);
+  const currentKeywords = keywords[language] || [];
+  const keywordRegex = new RegExp(`\\b(${currentKeywords.join('|')})\\b`, 'g');
 
-const RBBalancingCode = () => (
-    <pre className="code-block">
-        <span className="comment">{'// This function fixes violations caused by BST insertion'}</span>
-        {'\n'}<span className="keyword">function</span> <span className="function-name">fixViolation</span><span className="punctuation">(</span>root, <span className="value">pt</span><span className="punctuation">)</span><span className="punctuation">{'{'}</span>
-        {'\n  '}<span className="keyword">let</span> parent_pt <span className="operator">=</span> <span className="builtin">null</span><span className="punctuation">;</span>
-        {'\n  '}<span className="keyword">let</span> grand_parent_pt <span className="operator">=</span> <span className="builtin">null</span><span className="punctuation">;</span>
-        {'\n'}
-        {'\n  '}<span className="control">while</span> <span className="punctuation">((</span>pt <span className="operator">!=</span> root<span className="punctuation">)</span> <span className="operator">&&</span> <span className="punctuation">(</span>pt.color <span className="operator">!=</span> <span className="value">'BLACK'</span><span className="punctuation">)</span> <span className="operator">&&</span> <span className="punctuation">(</span>pt.parent.color <span className="operator">==</span> <span className="value">'RED'</span><span className="punctuation">))</span> <span className="punctuation">{'{'}</span>
-        {'\n    '}parent_pt <span className="operator">=</span> pt.parent<span className="punctuation">;</span>
-        {'\n    '}grand_parent_pt <span className="operator">=</span> pt.parent.parent<span className="punctuation">;</span>
-        {'\n'}
-        {'\n    '}<span className="comment">{'/* Case : A */'}</span>
-        {'\n    '}<span className="control">if</span> <span className="punctuation">(</span>parent_pt <span className="operator">==</span> grand_parent_pt.left<span className="punctuation">)</span> <span className="punctuation">{'{'}</span>
-        {'\n      '}<span className="keyword">let</span> uncle_pt <span className="operator">=</span> grand_parent_pt.right<span className="punctuation">;</span>
-        {'\n'}
-        {'\n      '}<span className="comment">{'/* Case : 1 - The uncle is also red ---> Only Recoloring required */'}</span>
-        {'\n      '}<span className="control">if</span> <span className="punctuation">(</span>uncle_pt <span className="operator">!=</span> <span className="builtin">null</span> <span className="operator">&&</span> uncle_pt.color <span className="operator">==</span> <span className="value">'RED'</span><span className="punctuation">)</span> <span className="punctuation">{'{'}</span>
-        {'\n        '}grand_parent_pt.color <span className="operator">=</span> <span className="value">'RED'</span><span className="punctuation">;</span>
-        {'\n        '}parent_pt.color <span className="operator">=</span> <span className="value">'BLACK'</span><span className="punctuation">;</span>
-        {'\n        '}uncle_pt.color <span className="operator">=</span> <span className="value">'BLACK'</span><span className="punctuation">;</span>
-        {'\n        '}pt <span className="operator">=</span> grand_parent_pt<span className="punctuation">;</span>
-        {'\n      '}<span className="punctuation">{'}'}</span> <span className="control">else</span> <span className="punctuation">{'{'}</span>
-        {'\n        '}<span className="comment">{'/* Case : 2 - pt is right child ---> Left-rotation required */'}</span>
-        {'\n        '}<span className="control">if</span> <span className="punctuation">(</span>pt <span className="operator">==</span> parent_pt.right<span className="punctuation">)</span> <span className="punctuation">{'{'}</span>
-        {'\n          '}<span className="function-name">rotateLeft</span><span className="punctuation">(</span>parent_pt<span className="punctuation">);</span>
-        {'\n          '}pt <span className="operator">=</span> parent_pt<span className="punctuation">;</span>
-        {'\n          '}parent_pt <span className="operator">=</span> pt.parent<span className="punctuation">;</span>
-        {'\n        '}<span className="punctuation">{'}'}</span>
-        {'\n'}
-        {'\n        '}<span className="comment">{'/* Case : 3 - pt is left child ---> Right-rotation required */'}</span>
-        {'\n        '}<span className="function-name">rotateRight</span><span className="punctuation">(</span>grand_parent_pt<span className="punctuation">);</span>
-        {'\n        '}<span className="function-name">swap</span><span className="punctuation">(</span>parent_pt.color, grand_parent_pt.color<span className="punctuation">);</span>
-        {'\n        '}pt <span className="operator">=</span> parent_pt<span className="punctuation">;</span>
-        {'\n      '}<span className="punctuation">{'}'}</span>
-        {'\n    '}<span className="punctuation">{'}'}</span>
-        {'\n'}
-        {'\n    '}<span className="comment">{'/* Case : B (parent is right child) - Symmetrical to Case A */'}</span>
-        {'\n    '}<span className="control">else</span> <span className="punctuation">{'{'}</span> <span className="comment">{'/* ... */'}</span> <span className="punctuation">{'}'}</span>
-        {'\n  '}<span className="punctuation">{'}'}</span>
-        {'\n'}
-        {'\n  '}root.color <span className="operator">=</span> <span className="value">'BLACK'</span><span className="punctuation">;</span>
-        {'\n'}<span className="punctuation">{'}'}</span>
-    </pre>
-);
+  return line
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') // HTML escape
+    .replace(/(\/\/.*)/g, '<span class="comment">$1</span>') // Comments
+    .replace(/"(.*?)"/g, '<span class="value">"$1"</span>') // Strings
+    .replace(keywordRegex, '<span class="keyword">$1</span>') // Keywords
+    .replace(/(\b[A-Z][a-zA-Z0-9]*\b)/g, '<span class="builtin">$1</span>') // Class names / Types
+    .replace(/(\b\d+\b)/g, '<span class="value">$1</span>'); // Numbers
+};
 
-export default function Algorithm({treeType}){
-  const title = treeType === 'BT' ? 'Common Tree Algorithms' : `Algorithms — ${treeType}`;
+
+// Component to parse and style the algorithm string
+const StyledAlgorithm = ({ text }) => {
+  const lines = text.split('\n').map((line, index) => {
+    // ## Subtitle
+    if (line.startsWith('## ')) {
+      return <h4 key={index} className="algo-subtitle">{line.substring(3)}</h4>;
+    }
+    // # Title
+    if (line.startsWith('# ')) {
+      return <h3 key={index} className="algo-title">{line.substring(2)}</h3>;
+    }
+    // - List item
+    if (line.trim().startsWith('- ')) {
+       line = line.replace('- ','');
+    }
+    
+    // **bold** keywords
+    const parts = line.split(/(\*\*.*?\*\*)/g);
+
+    return (
+      <p key={index} className="algo-line">
+        {parts.map((part, i) =>
+          part.startsWith('**') ? (
+            <strong key={i} className="algo-keyword">
+              {part.substring(2, part.length - 2)}
+            </strong>
+          ) : (
+            <span key={i}>{part}</span>
+          )
+        )}
+      </p>
+    );
+  });
+
+  return <div className="algo-container">{lines}</div>;
+};
+
+// --- UPDATED CodeBlock Component ---
+// This now splits the code into lines to preserve spacing.
+const CodeBlock = ({ code, language }) => {
+  return (
+    <motion.pre
+      className="code-block"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2 }}
+    >
+      <code>
+        {code.split('\n').map((line, i) => (
+          <div key={i} dangerouslySetInnerHTML={{ __html: highlightSyntax(line, language) || ' ' }} />
+        ))}
+      </code>
+    </motion.pre>
+  );
+};
+
+
+const AlgorithmSection = ({ title, description, data }) => {
+  const [activeTab, setActiveTab] = useState('algorithm');
+  const tabs = ['algorithm', 'cpp', 'java'];
+
+  return (
+    <motion.div
+      className="card"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h3 className="small">{title}</h3>
+      <p className="info">{description}</p>
+      <div className="code-tabs">
+        {tabs.map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={activeTab === tab ? 'active' : ''}
+          >
+            {tab === 'cpp' ? 'C++' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
+      </div>
+      <AnimatePresence mode="wait">
+        {activeTab === 'algorithm' ? (
+          <StyledAlgorithm key="algorithm" text={data.algorithm} />
+        ) : (
+          <CodeBlock key={activeTab} code={data[activeTab]} language={activeTab} />
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
+export default function Algorithm({ treeType }) {
+  const treeAlgorithms = algorithms[treeType] || algorithms['GENERAL'];
+  const pageTitle = treeType === 'GENERAL' ? 'Common Tree Algorithms' : `Algorithms — ${treeType}`;
 
   return (
     <div>
-      <h2 className="h1">{title}</h2>
-      <div className="card">
-        <h3 className="small">Insertion (BST)</h3>
-        <InsertionCode />
-      </div>
-      <div className="card">
-        <h3 className="small">Search (BST)</h3>
-        <SearchCode />
-      </div>
-
-      {(treeType === 'AVL' || treeType === 'RB') && (
-        <div className="card">
-          <h3 className="small">Notes on Self-Balancing Trees</h3>
-          <p className="info">For AVL and Red-Black trees, the standard BST insertion is followed by additional steps to maintain the tree's balance.</p>
-          
-          {treeType === 'AVL' && (
-            <>
-              <h4 className="small" style={{marginTop: '20px'}}>AVL Tree Balancing</h4>
-              <p className='info'>After a standard BST insert, we traverse up from the new leaf node to the root. For each node on this path, we update its height and check its balance factor. If a node becomes unbalanced, we perform the appropriate rotation(s) to restore the AVL property.</p>
-              <AVLBalancingCode />
-            </>
-          )}
-
-          {treeType === 'RB' && (
-            <>
-              <h4 className="small" style={{marginTop: '20px'}}>Red-Black Tree Balancing</h4>
-              <p className='info'>After a standard BST insert, the new node is colored red. This may violate some Red-Black properties (e.g., two adjacent red nodes). We then run a `fixViolation` function that uses a series of recolorings and rotations to restore the properties.</p>
-              <RBBalancingCode />
-            </>
-          )}
-        </div>
+      <h2 className="h1">{pageTitle}</h2>
+      {Object.keys(treeAlgorithms).length > 0 ? (
+        Object.values(treeAlgorithms).map((algoData, index) => (
+          <AlgorithmSection
+            key={index}
+            title={algoData.title}
+            description={algoData.description}
+            data={algoData}
+          />
+        ))
+      ) : (
+        <motion.div
+          className="card"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <p className="info">Algorithm examples for {treeType} are not available yet. Please check back later!</p>
+        </motion.div>
       )}
     </div>
-  )
+  );
 }

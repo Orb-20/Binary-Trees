@@ -67,6 +67,26 @@ function generatePerfectBinaryTree({ levels = 3, width = 4.5, height = 4.5 }) {
     return createParticleTargets(nodeCenters);
 }
 
+function generateCompleteBinaryTree({ nodes = 11, width = 5, height = 4.5 }) {
+    const nodeCenters = [];
+    const top = height * 0.45;
+    for (let i = 0; i < nodes; i++) {
+        const level = Math.floor(Math.log2(i + 1));
+        const posInLevel = i - (2 ** level - 1);
+        const nodesInLevel = 2 ** level;
+        const y = top - level * 1.5;
+        const spacing = width / nodesInLevel;
+        const x = -width / 2 + spacing / 2 + posInLevel * spacing;
+        const children = [];
+        const leftChild = 2 * i + 1;
+        const rightChild = 2 * i + 2;
+        if (leftChild < nodes) children.push(leftChild);
+        if (rightChild < nodes) children.push(rightChild);
+        nodeCenters.push({ x, y: y + yPositionOffset, z: 0, children });
+    }
+    return createParticleTargets(nodeCenters);
+}
+
 function generateSkewedTree({ levels = 7, height = 4.5 }) {
   const nodeCenters = [];
   const top = height * 0.45;
@@ -77,6 +97,25 @@ function generateSkewedTree({ levels = 7, height = 4.5 }) {
     nodeCenters.push({ x, y: y + yPositionOffset, z: 0, children });
   }
   return createParticleTargets(nodeCenters);
+}
+
+function generateRandomTree({ nodes = 15, width = 5, height = 5 }) {
+    const nodeCenters = [];
+    for (let i = 0; i < nodes; i++) {
+        nodeCenters.push({
+            x: (Math.random() - 0.5) * width,
+            y: (Math.random() - 0.5) * height + yPositionOffset,
+            z: (Math.random() - 0.5) * (width / 2),
+            children: []
+        });
+    }
+    for (let i = 1; i < nodes; i++) {
+        const parentIndex = Math.floor(Math.random() * i);
+        if (nodeCenters[parentIndex].children.length < 3) {
+             nodeCenters[parentIndex].children.push(i);
+        }
+    }
+    return createParticleTargets(nodeCenters);
 }
 
 function generateStarGraph({ count = 8, radius = 2.5 }) {
@@ -110,6 +149,51 @@ function generateGridGraph({ width = 3, height = 3, spacing = 1.5 }) {
     return createParticleTargets(nodeCenters);
 }
 
+function generateCircularGraph({ count = 10, radius = 2.5 }) {
+    const nodeCenters = [];
+    for (let i = 0; i < count; i++) {
+        const angle = (i / count) * Math.PI * 2;
+        nodeCenters.push({
+            x: radius * Math.cos(angle),
+            y: radius * Math.sin(angle) + yPositionOffset,
+            z: 0,
+            children: [(i + 1) % count]
+        });
+    }
+    return createParticleTargets(nodeCenters);
+}
+
+function generateHelix({ count = 25, radius = 2, height = 5, coils = 3 }) {
+    const nodeCenters = [];
+    for (let i = 0; i < count; i++) {
+        const angle = (i / count) * Math.PI * 2 * coils;
+        nodeCenters.push({
+            x: radius * Math.cos(angle),
+            y: (i / count) * height - height / 2 + yPositionOffset,
+            z: radius * Math.sin(angle),
+            children: i > 0 ? [i - 1] : []
+        });
+    }
+    return createParticleTargets(nodeCenters);
+}
+
+function generateSphere({ count = 20, radius = 2.5 }) {
+    const nodeCenters = [];
+    const phi = Math.PI * (3.0 - Math.sqrt(5.0));
+    for (let i = 0; i < count; i++) {
+        const y = 1 - (i / (count - 1)) * 2;
+        const r = Math.sqrt(1 - y * y);
+        const theta = phi * i;
+        nodeCenters.push({
+            x: Math.cos(theta) * r * radius,
+            y: y * radius + yPositionOffset,
+            z: Math.sin(theta) * r * radius,
+            children: i > 0 ? [Math.floor(i / 2)] : []
+        });
+    }
+    return createParticleTargets(nodeCenters);
+}
+
 
 // --- ANIMATION COMPONENT ---
 function ParticleSystem() {
@@ -123,6 +207,11 @@ function ParticleSystem() {
     generateStarGraph({}),
     generateSkewedTree({}),
     generateGridGraph({}),
+    generateCompleteBinaryTree({}),
+    generateCircularGraph({}),
+    generateHelix({}),
+    generateSphere({}),
+    generateRandomTree({})
   ], []);
 
   const maxNodes = useMemo(() => Math.max(...shapes.map(s => s.nodeTargets.length)), [shapes]);
