@@ -3,6 +3,7 @@ import React, { useMemo, useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Text, Line } from '@react-three/drei';
 import * as THREE from 'three';
+import { DIALOGUE } from '../stories/dialogue';
 
 // --- (treeData remains the same) ---
 const treeData = {
@@ -34,19 +35,26 @@ const treeData = {
 
 const Node = ({ node, isHighlighted }) => {
   const meshRef = useRef();
+  const groupRef = useRef();
   const originalColor = useMemo(() => new THREE.Color("#032F2F"), []);
   const highlightColor = useMemo(() => new THREE.Color("#F6C85F"), []);
 
   useFrame(() => {
-    if (!meshRef.current) return;
+    if (!meshRef.current || !groupRef.current) return;
     const material = meshRef.current.material;
+    
+    // Animate scale for entry
+    const targetScale = 1;
+    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+    
+    // Animate color and emissive for highlight
     material.color.lerp(isHighlighted ? highlightColor : originalColor, 0.1);
     material.emissive.lerp(isHighlighted ? highlightColor : originalColor, 0.1);
     material.emissiveIntensity = isHighlighted ? 1.5 : 0;
   });
 
   return (
-    <group position={node.position}>
+    <group ref={groupRef} position={node.position} scale={[0,0,0]}>
       <mesh ref={meshRef}>
         <sphereGeometry args={[0.4, 32, 32]} />
         <meshStandardMaterial color={originalColor} roughness={0.5} metalness={0.5} emissive={originalColor} />
@@ -57,10 +65,19 @@ const Node = ({ node, isHighlighted }) => {
   );
 };
 
-function SceneAnimator({ type, animationFocus }) {
+function SceneAnimator({ type, animationFocus, currentIndex }) {
   const { camera, controls } = useThree();
   const data = useMemo(() => treeData[type] || treeData.DEFAULT, [type]);
   const [highlightedNodeIds, setHighlightedNodeIds] = useState(new Set());
+
+  const { visibleNodes, visibleLinks } = useMemo(() => {
+      const dialogue = DIALOGUE[type]?.[currentIndex];
+      if (!dialogue) return { visibleNodes: [], visibleLinks: [] };
+      return {
+          visibleNodes: data.nodes.filter(n => dialogue.visibleNodeIds?.includes(n.id)),
+          visibleLinks: data.links.filter((l, i) => dialogue.visibleLinkIndices?.includes(i))
+      }
+  }, [type, currentIndex, data]);
   
   const defaultCamPos = useMemo(() => new THREE.Vector3(0, 0, 10), []);
   const defaultTarget = useMemo(() => new THREE.Vector3(0, 0, 0), []);
@@ -82,14 +99,13 @@ function SceneAnimator({ type, animationFocus }) {
     if (targetNodes.length > 0) {
         newHighlightedIds = new Set(targetNodes.map(n => n.id));
         
-        // Calculate the center point of all target nodes
         const center = new THREE.Vector3();
         targetNodes.forEach(n => center.add(new THREE.Vector3(...n.position)));
         center.divideScalar(targetNodes.length);
         
         targetControlsTarget.current.copy(center);
         targetCamPos.current.copy(center).add(new THREE.Vector3(0, 1, 5));
-    } else { // Handles reset or no target
+    } else {
         targetCamPos.current.copy(defaultCamPos);
         targetControlsTarget.current.copy(defaultTarget);
     }
@@ -108,20 +124,20 @@ function SceneAnimator({ type, animationFocus }) {
 
   return (
     <>
-      {data.nodes.map(node => <Node key={node.id} node={node} isHighlighted={highlightedNodeIds.has(node.id)} />)}
-      {data.links.map((link, index) => (
+      {visibleNodes.map(node => <Node key={node.id} node={node} isHighlighted={highlightedNodeIds.has(node.id)} />)}
+      {visibleLinks.map((link, index) => (
           <Line key={index} points={[data.nodes.find(n => n.id === link.start).position, data.nodes.find(n => n.id === link.end).position]} color="#C6A15B" lineWidth={3} />
       ))}
     </>
   );
 }
 
-export default function StoryTreeAnimation({ treeType, animationFocus }) {
+export default function StoryTreeAnimation({ treeType, animationFocus, currentIndex }) {
   return (
     <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
       <ambientLight intensity={0.8} />
       <pointLight position={[10, 10, 10]} intensity={1.5} />
-      <SceneAnimator type={treeType} animationFocus={animationFocus} />
+      <SceneAnimator type={treeType} animationFocus={animationFocus} currentIndex={currentIndex} />
       <OrbitControls makeDefault enableZoom={true} enablePan={true} />
     </Canvas>
   );

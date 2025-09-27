@@ -120,7 +120,11 @@ export default function StoryMode({ treeType }) {
       <h2 className="h1">Story Mode — {treeType}</h2>
       <div className="card story-canvas">
         <div className="story-animation-panel-small">
-          <StoryTreeAnimation treeType={treeType} animationFocus={animationFocus} />
+          <StoryTreeAnimation 
+              treeType={treeType} 
+              animationFocus={animationFocus}
+              currentIndex={currentIndex} 
+            />
         </div>
         
         <div className="story-chat-panel">
