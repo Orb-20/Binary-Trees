@@ -1,89 +1,96 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { STORIES } from '../stories';
-import StoryTreeAnimation from '../components/StoryTreeAnimation'; // Import the new 3D component
-
-const paragraphVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.5, ease: "easeOut" } 
-  }
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08
-    }
-  }
-};
+// src/pages/StoryMode.jsx
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { DIALOGUE } from '../stories/dialogue';
+import StoryTreeAnimation from '../components/StoryTreeAnimation';
+import AnimatedMascot from '../components/AnimatedMascot';
+import { MASCOT_META } from '../mascot.config'; // Import the new config file
 
 export default function StoryMode({ treeType }) {
-  const story = STORIES[treeType] || STORIES['GENERAL'];
-  const title = treeType === 'GENERAL' ? 'The Story of Trees' : `Story Mode — ${treeType}`;
+  const [fullDialogue, setFullDialogue] = useState([]);
+  const [conversation, setConversation] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [animationFocus, setAnimationFocus] = useState(null);
+  const chatEndRef = useRef(null);
 
-  const renderParagraphBlock = (block, index) => {
-    block = block.trim();
-    if (!block) return null;
-
-    let className = 'story-paragraph';
+  useEffect(() => {
+    const storyDialogue = DIALOGUE[treeType] || DIALOGUE['GENERAL'];
+    setFullDialogue(storyDialogue);
     
-    if (block.toUpperCase().includes('STRICT RULE')) {
-      className = 'story-rule';
-    } else if (block.includes('Tree Corp:')) {
-      className = 'story-subheading';
-    } else if (block.startsWith('!')) {
-      className = 'story-summary-bullet';
-      block = block.substring(1).trim();
-    } else if (block.startsWith('-')) {
-      className = 'story-bullet';
-      block = block.substring(1).trim();
-    } else if (block.toLowerCase().startsWith('in short:')) {
-      className = 'story-summary';
+    if (storyDialogue.length > 0) {
+        setConversation([storyDialogue[0]]);
+        setCurrentIndex(0);
+        setAnimationFocus(storyDialogue[0].animationTarget);
+    } else {
+        setConversation([]);
+        setCurrentIndex(0);
+        setAnimationFocus(null);
     }
+  }, [treeType]);
 
-    return (
-      <motion.div 
-        key={index} 
-        className={className} 
-        variants={paragraphVariants}
-      >
-        {block}
-      </motion.div>
-    );
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [conversation]);
+
+  const handleNext = () => {
+    if (currentIndex >= fullDialogue.length - 1) return;
+    const nextIndex = currentIndex + 1;
+    const nextLine = fullDialogue[nextIndex];
+    setCurrentIndex(nextIndex);
+    setConversation(prev => [...prev, nextLine]);
+    setAnimationFocus(nextLine.animationTarget);
   };
-
-  const paragraphs = story.split('\n\n');
 
   return (
     <div>
-      <h2 className="h1">{title}</h2>
-      <motion.div
-        className="card"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.4 }}
-      >
-        <div className="story-content-wrapper">
-          <motion.div 
-            className="story-text-section"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {paragraphs.map(renderParagraphBlock)}
-          </motion.div>
-          
-          <div className="story-visual-section">
-            <StoryTreeAnimation treeType={treeType} />
-          </div>
-          
+      <h2 className="h1">Story Mode — {treeType}</h2>
+      <div className="card story-canvas">
+        <div className="story-animation-panel-small">
+          <StoryTreeAnimation treeType={treeType} animationFocus={animationFocus} />
         </div>
-      </motion.div>
+        
+        <div className="story-chat-panel">
+          <div className="story-chat-log">
+            <AnimatePresence>
+              {conversation.map((line, index) => {
+                const mascotInfo = MASCOT_META[line.mascotId];
+                return (
+                  <motion.div
+                    key={index}
+                    className={`chat-message-row ${line.mascotId}`}
+                    initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                    layout
+                  >
+                    <AnimatedMascot character={line.mascotId} reaction={line.reaction} size={60} />
+                    <div 
+                      className="chat-bubble"
+                      style={{
+                        backgroundColor: mascotInfo.bubbleBg,
+                        color: mascotInfo.bubbleColor,
+                        border: `1px solid ${mascotInfo.color}33` // Use mascot color with opacity for border
+                      }}
+                    >
+                      {line.text}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+            <div ref={chatEndRef} />
+          </div>
+
+          <button
+            onClick={handleNext}
+            disabled={currentIndex >= fullDialogue.length - 1}
+            className="btn-tree-op insert"
+            style={{ width: '100%', marginTop: '16px', flexShrink: 0 }}
+          >
+            {currentIndex >= fullDialogue.length - 1 ? 'End of Story' : 'Next'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
