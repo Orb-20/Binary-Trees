@@ -1,206 +1,145 @@
-# Binary Trees — DSA Visualizer
 
-How to run:
-1. Extract the zip.
-2. Run `npm install`
-3. Run `npm run dev`
-4. Open the dev server (usually http://localhost:5173)
+<!-- 🌲 DARK THEME README FOR BINARY TREE VISUALIZER 🌲 -->
 
-# Software Requirements Specification (SRS)
+<div align="center">
 
-**Project:** Binary Trees — DSA Visualizer (scaffold)
+<h1 align="center">
+  <br/> 
+  🌲 Binary Tree Visualizer 🌿
+</h1>
 
-**Prepared by:** 
+<h3>🎓 Learn • Visualize • Master Data Structures</h3>
 
-**Date:** 23 September 2025
+<p align="center">
+  <img src="https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge&logo=react" />
+  <img src="https://img.shields.io/badge/Build-Vite-%23ffdd40?style=for-the-badge&logo=vite" />
+  <img src="https://img.shields.io/badge/Language-JavaScript-orange?style=for-the-badge&logo=javascript" />
+  <img src="https://img.shields.io/badge/Animations-Lottie-%2300bcd4?style=for-the-badge&logo=airbnb" />
+</p>
 
-**Standard:** IEEE Std 830-1998 (adapted)
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,vite,js,html,css,git" />
+</p>
 
----
+> 🚀 An immersive way to explore and understand **Binary Trees**, **BST**, **AVL**, **Red-Black Trees**, **Heaps**, and **Tries** through interactive animations.
 
-## 1. Introduction
-
-### 1.1 Purpose
-
-This document provides the Software Requirements Specification (SRS) for the Binary Trees — DSA Visualizer project. It defines functional and non-functional requirements, system features, constraints, and acceptance criteria according to the IEEE standard. The intended audience includes developers, testers, instructors, and learners interested in extending or using the system.
-
-### 1.2 Scope
-
-The Binary Trees Visualizer is a client-side web application for demonstrating and teaching tree-based data structures (Binary Search Tree, AVL Tree, Red-Black Tree, Heap, Tries). It includes interactive visualizations, theory explanations, story-based learning, algorithm demonstrations, and quizzes. Technologies: React, Vite, D3.js, and Framer Motion.
-
-### 1.3 Definitions, Acronyms, Abbreviations
-
-* **SPA**: Single Page Application
-* **UI**: User Interface
-* **UX**: User Experience
-* **BST**: Binary Search Tree
-* **AVL**: Adelson-Velsky–Landis Tree (self-balancing BST)
-* **RB**: Red-Black Tree
-* **DSA**: Data Structures and Algorithms
-* **API**: Application Programming Interface
-
-### 1.4 References
-
-* IEEE Std 830-1998: IEEE Recommended Practice for Software Requirements Specifications.
-* Project repository: Binary-Trees-main (scaffold).
-
-### 1.5 Overview
-
-Subsequent sections detail the overall description (Section 2), specific requirements (Section 3 and 4), external interfaces (Section 5), and non-functional constraints (Section 6).
+</div>
 
 ---
 
-## 2. Overall Description
+## 🌑 Overview
 
-### 2.1 Product Perspective
+**Binary Tree Visualizer** is an interactive learning platform built with **React + Vite**.  
+It helps students and developers **visualize tree-based data structures** dynamically — making complex DSA topics easy to grasp.
 
-The product is an educational front-end application. It is independent of a backend server and stores only transient data locally. It visualizes tree structures and explains algorithms interactively.
-
-### 2.2 Product Functions
-
-* Select tree type on Home page.
-* Visualize tree insert/search operations with animations.
-* Display theory content and story-based explanations.
-* Show algorithm code snippets linked to visualizations.
-* Provide a quiz module.
-
-### 2.3 User Classes and Characteristics
-
-* **Learner**: Student exploring trees; requires clarity and simplicity.
-* **Instructor**: Uses story and quiz modules for teaching.
-* **Developer**: Maintains or extends algorithms and animations.
-
-### 2.4 Operating Environment
-
-* Runs on modern browsers (Chrome, Firefox, Safari, Edge).
-* Development requires Node.js and npm.
-
-### 2.5 Design and Implementation Constraints
-
-* Frontend-only implementation.
-* Relies on D3.js for visualization and Framer Motion for transitions.
-* Vite bundler for development.
-
-### 2.6 Assumptions and Dependencies
-
-* Users have a modern browser.
-* Node.js runtime installed for development.
-* No backend dependencies.
+🧠 It blends learning with visual engagement using 3D particles, smooth transitions, and Lottie animations.  
 
 ---
 
-## 3. System Features
+## 🌿 Supported Visualizations
 
-### 3.1 Home / Tree Selection
-
-* **Description**: Displays tree types (Binary tree, BST, Heap, Tries).
-* **Stimulus/Response**: When the user clicks a tree type, the application navigates to the visualization page for that tree.
-* **Requirements**:
-
-  * The system shall display a list of available tree types on the Home page.
-  * The system shall allow navigation to visualization and learning modules by selecting a tree type.
-
-### 3.2 Visualization Canvas
-
-* **Description**: Provides SVG/D3-based rendering with animations.
-* **Requirements**:
-
-  * The system shall render nodes and edges of the selected tree structure.
-  * The system shall animate insertion and search operations step by step.
-  * The system shall support zoom, pan, and reset view options.
-  * The system shall allow users to input sequences or insert values manually.
-
-### 3.3 Theory & Story Mode
-
-* **Description**: Offers explanatory text and story-driven walkthroughs of concepts.
-* **Requirements**:
-
-  * The system shall display theoretical explanations for each tree type.
-  * The system shall provide pre-authored scenarios (story mode) that explain algorithms through narrative and animation.
-
-### 3.4 Algorithm Page
-
-* **Description**: Presents pseudocode or code snippets and links them to visualization steps.
-* **Requirements**:
-
-  * The system shall display algorithm snippets (e.g., search, insert) for the chosen tree type.
-  * The system shall highlight visualization steps corresponding to the selected code line.
-
-### 3.5 Quiz
-
-* **Description**: Provides interactive quizzes to test user knowledge.
-* **Requirements**:
-
-  * The system shall present multiple-choice or short-answer quiz questions.
-  * The system shall provide immediate feedback and explanations for answers.
+| Tree Type | Description |
+|------------|-------------|
+| 🌳 Binary Tree | Basic parent-child relationships |
+| 🌿 Binary Search Tree (BST) | Ordered hierarchical tree |
+| 🌲 AVL Tree | Self-balancing BST |
+| 🔴 Red-Black Tree | Balanced search tree with color properties |
+| 🧱 Heap | Min/Max heap operations |
+| 🌐 Trie | String-based data structure |
 
 ---
 
-## 4. Specific Requirements
+## ⚙️ Tech Stack
 
-### 4.1 Functional Requirements
-
-* The application must load the Home page when launched in a supported browser.
-* The Home page must list at least BST, AVL, RB, Heap, and Tries.
-* The visualization must accept user-provided sequences and render the resulting tree.
-* The visualization must provide controls for animations including Play, Pause, Step Forward, Step Back, and Speed adjustment.
-* The search operation must highlight visited nodes and indicate whether the target value was found.
-* Story Mode must include at least one scenario for each supported tree type.
-* The Algorithm page must display algorithm snippets and highlight visualization steps linked to code.
-* The Quiz module must record scores locally and provide feedback for each answer.
-* The application must be responsive and usable on screens as small as 360px width.
-
-### 4.2 Non-Functional Requirements
-
-* Performance: Animations for up to 200 nodes should run without noticeable UI lag.
-* Usability: The interface must provide clear labels, instructions, and tooltips.
-* Accessibility: Primary controls must be operable via keyboard, with ARIA attributes applied.
-* Maintainability: Code should follow modular practices separating visualization, UI, and content.
-* Portability: The system must run on the latest two versions of Chrome, Firefox, Safari, and Edge.
-* Security: No unsafe evaluation of user input (e.g., no use of `eval`).
-
-### 4.3 External Interface Requirements
-
-* User Interface: The system shall include navigation, content pages, and an SVG visualization area.
-* Files: The system shall use precomputed animation JSON files located in `public/animations/`.
-* Development: Developers shall install dependencies via `npm install` and run using `npm run dev`.
-
-### 4.4 Data Requirements
-
-* Tree nodes shall include attributes such as `id`, `value`, `left`, `right`, `color`, `height`, `x`, and `y`.
-* Animation steps shall include operation type, involved nodes, textual description, and highlighted elements.
-
-### 4.5 Constraints
-
-* The application must run entirely on the client side without backend services.
-* Persistent storage is limited to browser local storage.
+| Layer | Tools |
+|--------|--------|
+| 💻 Frontend | React + Vite |
+| 🎨 Styling | CSS + Framer Motion + Custom Animations |
+| 🧩 Visualization | Lottie JSON + Particle.js |
+| 📦 Package Manager | npm |
+| 🔧 Config | vite.config.js |
 
 ---
 
-## 5. Other Non-Functional Requirements
+## 🗂️ Folder Structure
 
-* Reliability: The application shall run without crashes under expected usage.
-* Supportability: The repository shall provide installation and execution instructions.
-* Scalability: The design shall allow future addition of tree types and operations.
+```bash
+BinaryTree_Visualizer/
+├── public/
+│   └── animations/        # Lottie animations (BST, AVL, Heap, etc.)
+├── src/
+│   ├── components/        # Core visual and logic components
+│   ├── data/              # Quiz and algorithm data
+│   ├── assets/            # Icons, SVGs
+│   ├── styles.css         # Global styles
+│   └── App.jsx            # Root component
+├── index.html
+├── vite.config.js
+├── package.json
+└── README.md
+````
 
 ---
 
-## 6. Appendices
+## 🚀 Getting Started
 
-### 6.1 Acceptance Criteria / Test Cases
+### 1️⃣ Clone the Repository
 
-* Test Case 1: Launch the application and verify that the Home page loads correctly.
-* Test Case 2: Select BST, input sequence `50,30,70,20,40,60,80`, and verify correct tree rendering.
-* Test Case 3: Run insertion animation and verify correct order and step controls.
-* Test Case 4: Search for value `60` and verify nodes are highlighted correctly.
-* Test Case 5: Run AVL Story Mode and confirm explanations match the visualization.
-* Test Case 6: Attempt a quiz, submit answers, and verify scoring with feedback.
+```bash
+git clone https://github.com/Orb-20/BinaryTree_Visualizer.git
+```
 
-### 6.2 Future Enhancements
+### 2️⃣ Install Dependencies
 
-* Add dynamic AVL and RB balancing with on-the-fly animations.
-* Implement delete operations and rotation visualizations.
-* Provide accessibility enhancements and testing.
-* Add automated end-to-end tests (e.g., with Cypress or Playwright).
-* Optimize performance for large trees (more than 1000 nodes).
+```bash
+npm install
+```
+
+### 3️⃣ Run Development Server
+
+```bash
+npm run dev
+```
+
+### 4️⃣ Open in Browser
+
+🌐 Usually at → [http://localhost:5173](http://localhost:5173)
+
+---
+
+## ✨ Features
+
+* 🎥 Real-time Tree Animations
+* 🌳 Visual operations: Insert, Delete, Traverse
+* 🧩 Quiz Section for Learning Reinforcement
+* 💡 Modern UI with smooth transitions
+* 📚 Extendable codebase (add your own data structures easily!)
+
+---
+
+
+## 🌱 Future Improvements
+
+* 📈 Add Segment Tree and Fenwick Tree
+* 🧠 AI-powered learning hints
+* 🎨 Light/Dark Theme Toggle
+* 📱 Responsive mobile support
+
+---
+
+## 💻 Developer
+
+**🧑‍💻 [Orb-20](https://github.com/Orb-20)**
+
+> Built with passion for open-source & computer science learning ❤️
+
+<p align="center">
+  <a href="https://github.com/Orb-20/BinaryTree_Visualizer">
+    <img src="https://img.shields.io/github/stars/Orb-20/BinaryTree_Visualizer?style=social" />
+  </a>
+</p>
+
+---
+
+<div align="center">
 
